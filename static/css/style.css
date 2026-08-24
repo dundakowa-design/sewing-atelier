@@ -250,6 +250,7 @@ h1, h2, h3 {
 
 .hero-media {
   position: relative;
+  min-width: 0;
 }
 
 .hero-photo {
@@ -287,6 +288,11 @@ h1, h2, h3 {
 .hero-tag span {
   font-size: var(--fs-small);
   color: var(--color-ink-soft);
+}
+
+.hero-tag-heading,
+.hero-tag-cta {
+  display: none;
 }
 
 /* === Общая секция === */
