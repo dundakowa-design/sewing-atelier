@@ -26,7 +26,7 @@
         <a class="nav-link" href="#workshop">Цех</a>
         <a class="nav-link" href="#process">Процесс</a>
         <a class="nav-link" href="#contact">Контакты</a>
-        <a href="#contact" class="btn btn-primary nav-cta">Оставить заявку</a>
+        <a href="#contact" class="btn btn-primary nav-cta js-open-modal">Оставить заявку</a>
       </nav>
 
       <div class="header-actions">
@@ -71,7 +71,7 @@
         </div>
 
         <p class="hero-media-heading">Шьём одежду, которая держит <em>форму</em></p>
-        <a href="#contact" class="btn btn-primary hero-media-cta">Оставить заявку</a>
+        <a href="#contact" class="btn btn-primary hero-media-cta js-open-modal">Оставить заявку</a>
       </div>
     </section>
 
@@ -234,6 +234,31 @@
       <span>© 2026 Пошивочный цех «Стежок». Все права защищены.</span>
     </div>
   </footer>
+
+  <dialog class="modal" id="contact-modal">
+    <div class="modal-card">
+      <button type="button" class="modal-close" aria-label="Закрыть"></button>
+
+      <h2 class="modal-title">Обсудить проект</h2>
+      <p class="modal-lead">Оставьте контакты, и мы перезвоним вам в течение дня.</p>
+
+      <form class="modal-form" id="modal-order-form" action="/order" method="post">
+        <div class="field">
+          <label for="modal-name">Ваше имя</label>
+          <input type="text" id="modal-name" name="name" placeholder="Как к вам обращаться" autofocus required>
+        </div>
+
+        <div class="field">
+          <label for="modal-phone">Телефон</label>
+          <input type="tel" id="modal-phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block modal-submit">Отправить форму</button>
+        <p class="field-note">Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.</p>
+        <p class="form-status" id="modal-form-status" role="status"></p>
+      </form>
+    </div>
+  </dialog>
 
   <script src="/static/js/main.js"></script>
 </body>

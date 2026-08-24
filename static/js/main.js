@@ -41,15 +41,14 @@ if (navToggle && nav && navOverlay) {
 }
 
 // Отправка формы заявки на /order
-const orderForm = document.querySelector("#order-form");
-const formStatus = document.querySelector("#form-status");
+function bindOrderForm(form) {
+  const formStatus = form.querySelector(".form-status");
 
-if (orderForm) {
-  orderForm.addEventListener("submit", async (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const submitBtn = orderForm.querySelector("button[type='submit']");
-    const formData = new FormData(orderForm);
+    const submitBtn = form.querySelector("button[type='submit']");
+    const formData = new FormData(form);
 
     submitBtn.disabled = true;
     formStatus.textContent = "Отправляем заявку…";
@@ -64,7 +63,7 @@ if (orderForm) {
       if (response.ok) {
         formStatus.textContent = "Заявка отправлена. Мы перезвоним в течение дня.";
         formStatus.dataset.state = "success";
-        orderForm.reset();
+        form.reset();
       } else {
         formStatus.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
         formStatus.dataset.state = "error";
@@ -75,5 +74,51 @@ if (orderForm) {
     } finally {
       submitBtn.disabled = false;
     }
+  });
+}
+
+document.querySelectorAll(".contact-form, .modal-form").forEach(bindOrderForm);
+
+// Модальное окно заявки
+const contactModal = document.querySelector("#contact-modal");
+const modalTriggers = document.querySelectorAll(".js-open-modal");
+const modalClose = contactModal?.querySelector(".modal-close");
+
+if (contactModal) {
+  const openModal = () => {
+    contactModal.showModal();
+    document.body.classList.add("modal-open");
+  };
+
+  const closeModal = () => {
+    contactModal.close();
+  };
+
+  modalTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      openModal();
+    });
+  });
+
+  modalClose?.addEventListener("click", closeModal);
+
+  // Закрытие по клику на затемнённый фон вокруг карточки
+  contactModal.addEventListener("click", (event) => {
+    const rect = contactModal.getBoundingClientRect();
+    const clickedInside =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+
+    if (!clickedInside) {
+      closeModal();
+    }
+  });
+
+  // Esc закрывает <dialog> нативно; здесь только снимаем блокировку скролла
+  contactModal.addEventListener("close", () => {
+    document.body.classList.remove("modal-open");
   });
 }
