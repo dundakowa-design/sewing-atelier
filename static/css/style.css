@@ -290,6 +290,7 @@ h1, h2, h3 {
   color: var(--color-ink-soft);
 }
 
+.hero-media-heading,
 .hero-media-cta {
   display: none;
 }
