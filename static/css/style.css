@@ -161,28 +161,15 @@ h1, h2, h3 {
 .nav-toggle {
   display: none;
   background: none;
-  border: 1.5px solid var(--color-ink);
-  border-radius: var(--radius-s);
-  padding: 0.4em 0.6em;
+  border: none;
+  padding: 0.25em;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--color-ink);
 }
 
-.nav-toggle span,
-.nav-toggle span::before,
-.nav-toggle span::after {
-  content: "";
-  display: block;
-  width: 20px;
-  height: 2px;
-  background: var(--color-ink);
-  position: relative;
-}
-
-.nav-toggle span::before {
-  top: -6px;
-}
-
-.nav-toggle span::after {
-  top: 4px;
+.nav-cta {
+  display: none;
 }
 
 /* === Hero === */
@@ -224,10 +211,17 @@ h1, h2, h3 {
   position: relative;
 }
 
+.hero-photo {
+  overflow: hidden;
+  border-radius: var(--radius-m);
+}
+
 .hero-media img {
+  display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-m);
+  transform: scale(1.04);
+  transform-origin: center bottom;
 }
 
 .hero-tag {
@@ -246,6 +240,7 @@ h1, h2, h3 {
   display: block;
   font-family: var(--font-display);
   font-size: 1.5rem;
+  color: var(--color-thread);
 }
 
 .hero-tag span {

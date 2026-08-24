@@ -35,7 +35,8 @@
     --space-5: 2.5rem;
   }
 
-  .header-phone {
+  .header-phone,
+  .header-cta {
     display: none;
   }
 
@@ -67,10 +68,15 @@
   }
 
   .nav.nav--open {
-    max-height: 320px;
+    max-height: 400px;
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+  }
+
+  .nav-cta {
+    display: inline-flex;
+    width: 100%;
   }
 
   .hero-actions {
