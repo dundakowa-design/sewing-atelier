@@ -290,8 +290,7 @@ h1, h2, h3 {
   color: var(--color-ink-soft);
 }
 
-.hero-tag-heading,
-.hero-tag-cta {
+.hero-media-cta {
   display: none;
 }
 
