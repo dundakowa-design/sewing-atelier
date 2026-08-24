@@ -1,0 +1,60 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ряд промышленных швейных машин в цеху">
+  <rect width="400" height="300" fill="#faf9f6"/>
+  <rect x="0" y="0" width="400" height="150" fill="#f2efe8"/>
+  <rect x="0" y="150" width="400" height="150" fill="#e7e0d0"/>
+
+  <!-- окно -->
+  <rect x="30" y="24" width="90" height="60" rx="3" fill="#eaf1f2" stroke="#32475a" stroke-width="3"/>
+  <line x1="75" y1="24" x2="75" y2="84" stroke="#32475a" stroke-width="3"/>
+  <line x1="30" y1="54" x2="120" y2="54" stroke="#32475a" stroke-width="3"/>
+
+  <rect x="250" y="24" width="90" height="60" rx="3" fill="#eaf1f2" stroke="#32475a" stroke-width="3"/>
+  <line x1="295" y1="24" x2="295" y2="84" stroke="#32475a" stroke-width="3"/>
+  <line x1="250" y1="54" x2="340" y2="54" stroke="#32475a" stroke-width="3"/>
+
+  <!-- стол -->
+  <rect x="10" y="190" width="380" height="14" fill="#b9835a"/>
+  <rect x="24" y="204" width="14" height="70" fill="#8a6440"/>
+  <rect x="362" y="204" width="14" height="70" fill="#8a6440"/>
+
+  <!-- швейная машина 1 -->
+  <g transform="translate(58,120)">
+    <rect x="0" y="46" width="86" height="24" rx="4" fill="#1e2222"/>
+    <path d="M4 46 C4 10 40 -6 78 12 L78 46 Z" fill="#1e2222"/>
+    <rect x="60" y="0" width="10" height="18" rx="2" fill="#1e2222"/>
+    <circle cx="20" cy="30" r="7" fill="#c1440e"/>
+    <rect x="70" y="46" width="8" height="16" fill="#32475a"/>
+  </g>
+
+  <!-- швейная машина 2 -->
+  <g transform="translate(180,116)">
+    <rect x="0" y="50" width="90" height="24" rx="4" fill="#1e2222"/>
+    <path d="M4 50 C4 12 42 -6 82 14 L82 50 Z" fill="#1e2222"/>
+    <rect x="64" y="2" width="10" height="18" rx="2" fill="#1e2222"/>
+    <circle cx="22" cy="34" r="7" fill="#c1440e"/>
+    <rect x="72" y="50" width="8" height="16" fill="#32475a"/>
+  </g>
+
+  <!-- швейная машина 3 -->
+  <g transform="translate(300,122)">
+    <rect x="0" y="44" width="80" height="22" rx="4" fill="#1e2222"/>
+    <path d="M4 44 C4 8 36 -6 72 10 L72 44 Z" fill="#1e2222"/>
+    <rect x="56" y="0" width="9" height="16" rx="2" fill="#1e2222"/>
+    <circle cx="18" cy="28" r="6" fill="#c1440e"/>
+  </g>
+
+  <!-- катушки нитей -->
+  <g>
+    <rect x="140" y="150" width="14" height="20" rx="2" fill="#c1440e"/>
+    <rect x="140" y="146" width="14" height="4" fill="#1e2222"/>
+    <rect x="140" y="170" width="14" height="4" fill="#1e2222"/>
+
+    <rect x="158" y="150" width="14" height="20" rx="2" fill="#32475a"/>
+    <rect x="158" y="146" width="14" height="4" fill="#1e2222"/>
+    <rect x="158" y="170" width="14" height="4" fill="#1e2222"/>
+  </g>
+
+  <!-- лампа -->
+  <path d="M280 84 L292 130 L268 130 Z" fill="#c1440e"/>
+  <line x1="280" y1="60" x2="280" y2="84" stroke="#1e2222" stroke-width="2"/>
+</svg>
