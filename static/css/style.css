@@ -319,14 +319,19 @@ h1, h2, h3 {
 }
 
 .gallery-item {
+  display: flex;
+  flex-direction: column;
   border-radius: var(--radius-m);
   overflow: hidden;
   border: 1px solid var(--color-line);
+  box-shadow: 0 2px 8px rgba(20, 20, 20, 0.06);
+  background: var(--color-linen);
 }
 
 .gallery-item img {
+  display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 220px;
   object-fit: cover;
 }
 
@@ -335,12 +340,7 @@ h1, h2, h3 {
   font-size: var(--fs-small);
   color: var(--color-ink-soft);
   border-top: 1px solid var(--color-line);
-}
-
-.gallery-note {
-  margin-top: var(--space-2);
-  font-size: var(--fs-small);
-  color: var(--color-ink-soft);
+  background: var(--color-linen);
 }
 
 /* === Процесс === */
