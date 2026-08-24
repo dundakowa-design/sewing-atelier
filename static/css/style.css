@@ -293,8 +293,9 @@ h1, h2, h3 {
 }
 
 .service-icon {
-  width: 40px;
-  height: 40px;
+  display: block;
+  font-size: 40px;
+  line-height: 1;
   margin-bottom: var(--space-2);
   color: var(--color-denim);
 }
