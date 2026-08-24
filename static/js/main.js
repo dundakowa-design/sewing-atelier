@@ -4,7 +4,15 @@ const nav = document.querySelector(".nav");
 
 if (navToggle && nav) {
   navToggle.addEventListener("click", () => {
-    nav.classList.toggle("nav--open");
+    const isOpen = nav.classList.toggle("nav--open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  nav.querySelectorAll(".nav-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("nav--open");
+      navToggle.setAttribute("aria-expanded", "false");
+    });
   });
 }
 
