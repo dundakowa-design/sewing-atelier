@@ -294,7 +294,7 @@ h1, h2, h3 {
 
 .service-icon {
   display: block;
-  font-size: 40px;
+  font-size: 2rem;
   line-height: 1;
   margin-bottom: var(--space-2);
   color: var(--color-denim);
