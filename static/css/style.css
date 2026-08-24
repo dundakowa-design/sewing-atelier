@@ -160,12 +160,53 @@ h1, h2, h3 {
 
 .nav-toggle {
   display: none;
+  position: relative;
+  width: 26px;
+  height: 20px;
   background: none;
   border: none;
-  padding: 0.25em;
-  font-size: 1.6rem;
-  line-height: 1;
-  color: var(--color-ink);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-toggle-bar,
+.nav-toggle-bar::before,
+.nav-toggle-bar::after {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-ink);
+  transition: transform 0.3s ease, opacity 0.2s ease, top 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-toggle-bar {
+  top: 9px;
+}
+
+.nav-toggle-bar::before {
+  content: "";
+  top: -8px;
+}
+
+.nav-toggle-bar::after {
+  content: "";
+  top: 8px;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar {
+  background: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar::after {
+  top: 0;
+  transform: rotate(-45deg);
 }
 
 .nav-cta {
