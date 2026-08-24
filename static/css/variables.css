@@ -1,0 +1,37 @@
+:root {
+  /* === Цвет === */
+  --color-bg: #ffffff;
+  --color-ink: #1e2222;         /* основной текст, почти чёрный графит */
+  --color-ink-soft: #52584f;    /* второстепенный текст */
+  --color-thread: #c1440e;      /* акцент — цвет нити (ржаво-терракотовый) */
+  --color-thread-dark: #9c360a;
+  --color-denim: #32475a;       /* второй акцент — цвет джинсовой ткани */
+  --color-line: #dedad0;        /* тонкие линии/границы на белом */
+  --color-linen: #faf9f6;       /* почти белый, для очень лёгкого выделения карточек */
+
+  /* === Типографика === */
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-label: "Manrope", "Segoe UI", sans-serif;
+
+  --fs-hero: clamp(2.4rem, 5vw + 1rem, 4.4rem);
+  --fs-h2: clamp(1.8rem, 2.6vw + 1rem, 2.6rem);
+  --fs-h3: 1.25rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-label: 0.78rem;
+
+  /* === Сетка / отступы === */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6.5rem;
+
+  --radius-s: 4px;
+  --radius-m: 10px;
+  --container: 1180px;
+
+  --stitch-dash: 10px;
+}

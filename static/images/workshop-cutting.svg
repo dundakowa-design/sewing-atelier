@@ -1,0 +1,38 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Раскроечный стол с тканью, лекалами и ножницами">
+  <rect width="400" height="300" fill="#faf9f6"/>
+  <rect x="0" y="0" width="400" height="70" fill="#f2efe8"/>
+
+  <!-- большой раскроечный стол -->
+  <rect x="20" y="70" width="360" height="150" rx="4" fill="#b9835a"/>
+  <rect x="20" y="70" width="360" height="150" rx="4" fill="none" stroke="#8a6440" stroke-width="4"/>
+  <rect x="34" y="220" width="16" height="60" fill="#8a6440"/>
+  <rect x="350" y="220" width="16" height="60" fill="#8a6440"/>
+
+  <!-- ткань на столе -->
+  <rect x="48" y="90" width="304" height="110" rx="6" fill="#e3d9c4"/>
+
+  <!-- лекала (бумажные выкройки) -->
+  <path d="M80 110 L150 104 L162 150 L96 168 Z" fill="#faf9f6" stroke="#1e2222" stroke-width="2"/>
+  <path d="M180 108 L232 116 L226 168 L176 160 Z" fill="#faf9f6" stroke="#1e2222" stroke-width="2"/>
+  <circle cx="115" cy="130" r="2" fill="#1e2222"/>
+  <circle cx="130" cy="145" r="2" fill="#1e2222"/>
+  <circle cx="200" cy="130" r="2" fill="#1e2222"/>
+  <circle cx="205" cy="150" r="2" fill="#1e2222"/>
+
+  <!-- линия раскроя (мел) -->
+  <path d="M96 168 L162 150" stroke="#c1440e" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <!-- ножницы -->
+  <g transform="translate(258,150) rotate(-20)">
+    <circle cx="0" cy="0" r="9" fill="none" stroke="#1e2222" stroke-width="3"/>
+    <circle cx="18" cy="10" r="9" fill="none" stroke="#1e2222" stroke-width="3"/>
+    <path d="M6 -4 L70 -18 L60 -6 Z" fill="#32475a"/>
+    <path d="M12 12 L74 22 L60 10 Z" fill="#32475a"/>
+  </g>
+
+  <!-- катушка нитей и сантиметр -->
+  <circle cx="300" cy="185" r="14" fill="none" stroke="#c1440e" stroke-width="4" stroke-dasharray="3 4"/>
+
+  <!-- пол -->
+  <rect x="0" y="220" width="400" height="80" fill="#e7e0d0"/>
+</svg>

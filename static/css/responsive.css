@@ -1,0 +1,90 @@
+/* === Планшет: ≤ 1024px === */
+@media (max-width: 1024px) {
+  .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .process-list {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: var(--space-4);
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-media {
+    order: -1;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+
+  .contact-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Мобильные: ≤ 720px === */
+@media (max-width: 720px) {
+  :root {
+    --space-6: 3.5rem;
+    --space-5: 2.5rem;
+  }
+
+  .nav,
+  .header-phone {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-tag {
+    position: static;
+    margin-top: var(--space-2);
+    box-shadow: none;
+    display: inline-block;
+  }
+
+  .service-grid,
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .process-list {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-3);
+  }
+
+  .process-step::before {
+    display: none;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* === Малые экраны: ≤ 420px === */
+@media (max-width: 420px) {
+  .contact-form {
+    padding: var(--space-3);
+  }
+
+  .hero-tag {
+    max-width: none;
+  }
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Стежок — пошивочный цех</title>
+  <meta name="description" content="Пошивочный цех «Стежок»: индивидуальный пошив, мелкосерийное производство, ремонт и подгонка одежды.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/css/reset.css">
+  <link rel="stylesheet" href="/static/css/variables.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/responsive.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="logo">СТЕЖ<span>О</span>К</a>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <a class="nav-link" href="#services">Услуги</a>
+        <a class="nav-link" href="#workshop">Цех</a>
+        <a class="nav-link" href="#process">Процесс</a>
+        <a class="nav-link" href="#contact">Контакты</a>
+      </nav>
+
+      <div class="header-actions">
+        <span class="header-phone">+7 (900) 123-45-67</span>
+        <a href="#contact" class="btn btn-primary">Оставить заявку</a>
+        <button class="nav-toggle" aria-label="Открыть меню"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <span class="eyebrow">Пошивочный цех полного цикла</span>
+          <h1 class="hero-title">Шьём одежду,<br>которая держит <em>форму</em></h1>
+          <p class="hero-sub">
+            Индивидуальный пошив, мелкосерийное производство и ремонт одежды.
+            Свои лекальщики, раскройщики и швеи — от эскиза до готового изделия
+            в одном цехе.
+          </p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">Оставить заявку</a>
+            <a href="#workshop" class="btn btn-ghost">Смотреть цех</a>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <img src="/static/images/hero-sewing.svg" alt="Иллюстрация промышленной швейной машины в цеху" width="560" height="480">
+          <div class="hero-tag">
+            <strong>15&nbsp;лет</strong>
+            <span>шьём для частных клиентов и бизнеса</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="stitch-divider">
+
+    <!-- УСЛУГИ -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Что мы шьём</span>
+          <h2 class="section-title">Услуги цеха</h2>
+        </div>
+
+        <div class="service-grid">
+          <article class="service-card">
+            <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 32 L32 8 M8 8 L32 32"/><circle cx="20" cy="20" r="16"/></svg>
+            <h3 class="service-name">Пошив по меркам</h3>
+            <p class="service-desc">Индивидуальные лекала и примерки — вещь садится точно на фигуру.</p>
+          </article>
+
+          <article class="service-card">
+            <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="10" width="24" height="20" rx="2"/><path d="M8 18 H32"/></svg>
+            <h3 class="service-name">Мелкосерийное производство</h3>
+            <p class="service-desc">Партии от 20 изделий: форма, спецодежда, коллекции малых брендов.</p>
+          </article>
+
+          <article class="service-card">
+            <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 V34 M6 20 H34"/><circle cx="20" cy="20" r="14"/></svg>
+            <h3 class="service-name">Ремонт и подгонка</h3>
+            <p class="service-desc">Ушить, удлинить, заменить молнию — вернём вещи вторую жизнь.</p>
+          </article>
+
+          <article class="service-card">
+            <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 34 L12 14 C12 9 16 6 20 6 C24 6 28 9 28 14 L28 34"/></svg>
+            <h3 class="service-name">Спецодежда и форма</h3>
+            <p class="service-desc">Рабочая и корпоративная форма с нанесением логотипа.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <hr class="stitch-divider">
+
+    <!-- ЦЕХ -->
+    <section class="section" id="workshop">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Изнутри</span>
+          <h2 class="section-title">Наш цех</h2>
+          <p class="section-lead">Четыре участка одного процесса: раскрой, пошив, хранение тканей и выдача готовых изделий.</p>
+        </div>
+
+        <div class="gallery-grid">
+          <figure class="gallery-item">
+            <img src="/static/images/workshop-machines.svg" alt="Ряд промышленных швейных машин" loading="lazy">
+            <figcaption class="gallery-caption">Швейный участок</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="/static/images/workshop-cutting.svg" alt="Раскроечный стол с лекалами" loading="lazy">
+            <figcaption class="gallery-caption">Раскройный стол</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="/static/images/workshop-fabrics.svg" alt="Стеллаж с рулонами ткани" loading="lazy">
+            <figcaption class="gallery-caption">Склад тканей</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="/static/images/workshop-rack.svg" alt="Стойка с готовой одеждой" loading="lazy">
+            <figcaption class="gallery-caption">Выдача готовых изделий</figcaption>
+          </figure>
+        </div>
+        <p class="gallery-note">Изображения — стилизованные иллюстрации цеха; при необходимости легко заменить на реальные фотографии.</p>
+      </div>
+    </section>
+
+    <hr class="stitch-divider">
+
+    <!-- ПРОЦЕСС -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Как мы работаем</span>
+          <h2 class="section-title">От заявки до готовой вещи</h2>
+        </div>
+
+        <ol class="process-list">
+          <li class="process-step">
+            <span class="step-number">01</span>
+            <h3 class="step-title">Заявка</h3>
+            <p class="step-desc">Оставляете имя и телефон — перезваниваем в течение дня.</p>
+          </li>
+          <li class="process-step">
+            <span class="step-number">02</span>
+            <h3 class="step-title">Замер и лекала</h3>
+            <p class="step-desc">Снимаем мерки, строим индивидуальные лекала изделия.</p>
+          </li>
+          <li class="process-step">
+            <span class="step-number">03</span>
+            <h3 class="step-title">Раскрой</h3>
+            <p class="step-desc">Раскраиваем ткань по лекалам на раскройном столе.</p>
+          </li>
+          <li class="process-step">
+            <span class="step-number">04</span>
+            <h3 class="step-title">Пошив</h3>
+            <p class="step-desc">Швеи собирают изделие на промышленном оборудовании.</p>
+          </li>
+          <li class="process-step">
+            <span class="step-number">05</span>
+            <h3 class="step-title">Примерка и выдача</h3>
+            <p class="step-desc">Финальная примерка, при необходимости — подгонка по фигуре.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- КОНТАКТЫ / ФОРМА -->
+    <section class="contact" id="contact">
+      <div class="container contact-inner">
+        <div class="contact-text">
+          <span class="eyebrow">Связаться с нами</span>
+          <h2 class="contact-title">Оставьте заявку</h2>
+          <p class="contact-lead">Расскажите, что нужно сшить или починить — перезвоним и обсудим детали, сроки и стоимость.</p>
+
+          <dl class="contact-details">
+            <div>
+              <dt>Телефон</dt>
+              <dd>+7 (900) 123-45-67</dd>
+            </div>
+            <div>
+              <dt>Адрес цеха</dt>
+              <dd>г. Москва, ул. Текстильная, 12</dd>
+            </div>
+            <div>
+              <dt>Режим работы</dt>
+              <dd>Пн–Сб, 9:00–19:00</dd>
+            </div>
+          </dl>
+        </div>
+
+        <form class="contact-form" id="order-form" action="/order" method="post">
+          <div class="field">
+            <label for="name">Имя</label>
+            <input type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
+          </div>
+
+          <div class="field">
+            <label for="phone">Телефон</label>
+            <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Отправить заявку</button>
+          <p class="field-note">Нажимая «Отправить», вы соглашаетесь на обработку данных для обратной связи.</p>
+          <p class="form-status" id="form-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="logo">СТЕЖ<span>О</span>К</span>
+      <span>© 2026 Пошивочный цех «Стежок». Все права защищены.</span>
+    </div>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
