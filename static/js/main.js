@@ -40,6 +40,64 @@ if (navToggle && nav && navOverlay) {
   });
 }
 
+// Маска телефона: +7 (___) ___-__-__
+function formatPhoneDigits(digits) {
+  let result = "+7";
+  if (digits.length > 0) result += " (" + digits.slice(0, 3);
+  if (digits.length >= 3) result += ")";
+  if (digits.length >= 4) result += " " + digits.slice(3, 6);
+  if (digits.length >= 7) result += "-" + digits.slice(6, 8);
+  if (digits.length >= 9) result += "-" + digits.slice(8, 10);
+  return result;
+}
+
+function extractPhoneDigits(rawValue) {
+  // Сначала убираем наш собственный префикс "+7"/"7", чтобы не спутать
+  // его с восьмёркой/семёркой, которую по привычке допечатал пользователь.
+  const rest = rawValue.replace(/^\+?7/, "");
+  let digits = rest.replace(/\D/g, "");
+  if (digits.startsWith("8") || digits.startsWith("7")) {
+    digits = digits.slice(1);
+  }
+  return digits.slice(0, 10);
+}
+
+function isPhoneInputComplete(input) {
+  return extractPhoneDigits(input.value).length === 10;
+}
+
+function initPhoneMask(input) {
+  input.addEventListener("focus", () => {
+    if (input.value === "") {
+      input.value = "+7 ";
+    }
+    const pos = input.value.length;
+    input.setSelectionRange(pos, pos);
+  });
+
+  input.addEventListener("input", () => {
+    const digits = extractPhoneDigits(input.value);
+    input.value = digits.length > 0 ? formatPhoneDigits(digits) : "+7 ";
+    input.classList.remove("field-invalid");
+    const pos = input.value.length;
+    input.setSelectionRange(pos, pos);
+  });
+
+  input.addEventListener("blur", () => {
+    const digits = extractPhoneDigits(input.value);
+    if (digits.length === 0) {
+      input.value = "";
+      input.classList.remove("field-invalid");
+    } else if (digits.length < 10) {
+      input.classList.add("field-invalid");
+    } else {
+      input.classList.remove("field-invalid");
+    }
+  });
+}
+
+document.querySelectorAll('input[type="tel"]').forEach(initPhoneMask);
+
 // Отправка формы заявки на /order
 function bindOrderForm(form) {
   const formStatus = form.querySelector(".form-status");
@@ -50,6 +108,15 @@ function bindOrderForm(form) {
     const honeypot = form.querySelector('[name="confirm_email_check"]');
     if (honeypot && honeypot.value !== "") {
       console.error("Форма отклонена: заполнено honeypot-поле (похоже на спам-бота).");
+      return;
+    }
+
+    const phoneInput = form.querySelector('input[type="tel"]');
+    if (phoneInput && !isPhoneInputComplete(phoneInput)) {
+      phoneInput.classList.add("field-invalid");
+      phoneInput.focus();
+      formStatus.textContent = "Проверьте номер телефона — введите его полностью.";
+      formStatus.dataset.state = "error";
       return;
     }
 
