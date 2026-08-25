@@ -98,11 +98,12 @@ function initPhoneMask(input) {
 
 document.querySelectorAll('input[type="tel"]').forEach(initPhoneMask);
 
-// Поле «Имя»: только буквы, пробел и дефис
-const NAME_ALLOWED_CHARS = /[^a-zA-Zа-яёА-ЯЁ\s-]/g;
+// Поле «Имя»: только кириллица, пробел и дефис
+const NAME_ALLOWED_CHARS = /[^а-яёА-ЯЁ\s-]/g;
+const NAME_MAX_WORD_LENGTH = 15;
 
 function countNameLetters(value) {
-  const matches = value.match(/[a-zA-Zа-яёА-ЯЁ]/g);
+  const matches = value.match(/[а-яёА-ЯЁ]/g);
   return matches ? matches.length : 0;
 }
 
@@ -110,9 +111,25 @@ function isNameInputValid(input) {
   return countNameLetters(input.value) >= 2;
 }
 
+function sanitizeName(value) {
+  // Только кириллица, пробел и дефис — латиница и все прочие символы вырезаются
+  let cleaned = value.replace(NAME_ALLOWED_CHARS, "");
+
+  // Не больше двух одинаковых букв подряд («аа» можно, «ааа» схлопывается до «аа»)
+  cleaned = cleaned.replace(/([а-яёА-ЯЁ])\1{2,}/gi, "$1$1");
+
+  // Каждое слово (между пробелами) не длиннее 15 символов
+  cleaned = cleaned
+    .split(" ")
+    .map((word) => word.slice(0, NAME_MAX_WORD_LENGTH))
+    .join(" ");
+
+  return cleaned;
+}
+
 function initNameInput(input) {
   input.addEventListener("input", () => {
-    const cleaned = input.value.replace(NAME_ALLOWED_CHARS, "");
+    const cleaned = sanitizeName(input.value);
     if (cleaned !== input.value) {
       const removedBeforeCursor = input.value.length - cleaned.length;
       const pos = Math.max(0, input.selectionStart - removedBeforeCursor);
