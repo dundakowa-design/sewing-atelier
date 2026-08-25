@@ -152,7 +152,7 @@ function initNameInput(input) {
 
 document.querySelectorAll('input[name="name"]').forEach(initNameInput);
 
-// Отправка формы заявки на /order
+// Отправка формы заявки на /api/submit (Vercel Serverless Function -> Telegram)
 function bindOrderForm(form) {
   const formStatus = form.querySelector(".form-status");
 
@@ -188,21 +188,28 @@ function bindOrderForm(form) {
 
     const submitBtn = form.querySelector("button[type='submit']");
     const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
 
     submitBtn.disabled = true;
     formStatus.textContent = "Отправляем заявку…";
     formStatus.dataset.state = "";
 
     try {
-      const response = await fetch("/order", {
+      const response = await fetch("/api/submit", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         formStatus.textContent = "Заявка отправлена. Мы перезвоним в течение дня.";
         formStatus.dataset.state = "success";
         form.reset();
+
+        const parentModal = form.closest("dialog.modal");
+        if (parentModal) {
+          setTimeout(() => parentModal.close(), 1400);
+        }
       } else {
         formStatus.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
         formStatus.dataset.state = "error";
