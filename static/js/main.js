@@ -122,3 +122,22 @@ if (contactModal) {
     document.body.classList.remove("modal-open");
   });
 }
+
+// Табы услуг: «Для себя» / «Для бизнеса»
+const serviceTabs = document.querySelectorAll(".service-tab");
+
+serviceTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const targetId = tab.getAttribute("aria-controls");
+
+    serviceTabs.forEach((otherTab) => {
+      const isActive = otherTab === tab;
+      otherTab.setAttribute("aria-selected", String(isActive));
+      otherTab.tabIndex = isActive ? 0 : -1;
+    });
+
+    document.querySelectorAll(".service-grid[role='tabpanel']").forEach((panel) => {
+      panel.hidden = panel.id !== targetId;
+    });
+  });
+});

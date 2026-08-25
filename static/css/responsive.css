@@ -1,9 +1,5 @@
 /* === Планшет: ≤ 1024px === */
 @media (max-width: 1024px) {
-  .service-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
   }

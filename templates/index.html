@@ -87,29 +87,52 @@
           <h2 class="section-title">Услуги цеха</h2>
         </div>
 
-        <div class="service-grid">
+        <div class="service-tabs" role="tablist" aria-label="Аудитория услуг">
+          <button class="service-tab" id="tab-b2c" role="tab" type="button" aria-selected="true" aria-controls="panel-b2c">Для себя</button>
+          <button class="service-tab" id="tab-b2b" role="tab" type="button" aria-selected="false" aria-controls="panel-b2b" tabindex="-1">Для бизнеса</button>
+        </div>
+
+        <div class="service-grid" id="panel-b2c" role="tabpanel" aria-labelledby="tab-b2c">
           <article class="service-card">
-            <i class="bi bi-person-bounding-box service-icon" aria-hidden="true"></i>
-            <h3 class="service-name">Пошив по меркам</h3>
-            <p class="service-desc">Индивидуальные лекала и примерки — вещь садится точно на фигуру.</p>
+            <img class="service-card-img" src="https://images.unsplash.com/photo-1536867520774-5b4f2628a69b?w=600&amp;h=450&amp;fit=crop&amp;auto=format&amp;q=80" alt="Сантиметровая лента, нитки и ножницы на ткани — подготовка к индивидуальному пошиву" loading="lazy" width="600" height="450">
+            <div class="service-card-body">
+              <h3 class="service-card-title">Пошив по меркам</h3>
+              <p class="service-card-desc">Индивидуальные лекала и примерки — вещь садится точно на фигуру.</p>
+              <p class="service-card-price">от 8 000 ₽</p>
+              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+            </div>
           </article>
 
           <article class="service-card">
-            <i class="bi bi-tags service-icon" aria-hidden="true"></i>
-            <h3 class="service-name">Мелкосерийное производство</h3>
-            <p class="service-desc">Партии от 20 изделий: форма, спецодежда, коллекции малых брендов.</p>
+            <img class="service-card-img" src="https://images.unsplash.com/photo-1497997092403-f091fcf5b6c4?w=600&amp;h=450&amp;fit=crop&amp;auto=format&amp;q=80" alt="Игла швейной машины крупным планом на тёмной ткани — ремонт изделия" loading="lazy" width="600" height="450">
+            <div class="service-card-body">
+              <h3 class="service-card-title">Ремонт и подгонка</h3>
+              <p class="service-card-desc">Ушить, удлинить, заменить молнию — вернём вещи вторую жизнь.</p>
+              <p class="service-card-price">от 500 ₽</p>
+              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="service-grid" id="panel-b2b" role="tabpanel" aria-labelledby="tab-b2b" hidden>
+          <article class="service-card">
+            <img class="service-card-img" src="https://images.unsplash.com/photo-1718184021018-d2158af6b321?w=600&amp;h=450&amp;fit=crop&amp;auto=format&amp;q=80" alt="Раскрой ткани по лекалу для партии изделий" loading="lazy" width="600" height="450">
+            <div class="service-card-body">
+              <h3 class="service-card-title">Мелкосерийное производство</h3>
+              <p class="service-card-desc">Партии от 20 изделий: форма, спецодежда, коллекции малых брендов.</p>
+              <p class="service-card-price">по запросу за партию</p>
+              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+            </div>
           </article>
 
           <article class="service-card">
-            <i class="bi bi-scissors service-icon" aria-hidden="true"></i>
-            <h3 class="service-name">Ремонт и подгонка</h3>
-            <p class="service-desc">Ушить, удлинить, заменить молнию — вернём вещи вторую жизнь.</p>
-          </article>
-
-          <article class="service-card">
-            <i class="bi bi-person-workspace service-icon" aria-hidden="true"></i>
-            <h3 class="service-name">Спецодежда и форма</h3>
-            <p class="service-desc">Рабочая и корпоративная форма с нанесением логотипа.</p>
+            <img class="service-card-img" src="https://images.unsplash.com/photo-1628565931779-4f4f0b4f578a?w=600&amp;h=450&amp;fit=crop&amp;auto=format&amp;q=80" alt="Сшитый пиджак со сметочными стежками на манекене — пошив корпоративной формы" loading="lazy" width="600" height="450">
+            <div class="service-card-body">
+              <h3 class="service-card-title">Спецодежда и форма</h3>
+              <p class="service-card-desc">Рабочая и корпоративная форма с нанесением логотипа.</p>
+              <p class="service-card-price">от 3 500 ₽/комплект</p>
+              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+            </div>
           </article>
         </div>
       </div>
