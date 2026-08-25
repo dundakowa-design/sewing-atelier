@@ -151,21 +151,52 @@
 
         <div class="gallery-grid">
           <figure class="gallery-item">
-            <img src="/static/images/workshop.jpg" alt="Ряд промышленных швейных машин" loading="lazy">
-            <figcaption class="gallery-caption">Швейный участок</figcaption>
+            <img class="gallery-img" src="/static/images/workshop.jpg" alt="Ряд промышленных швейных машин" loading="lazy">
+            <figcaption class="gallery-caption">
+              <h3 class="gallery-title">Швейный участок</h3>
+              <ul class="gallery-features">
+                <li>Промышленные прямострочные машины</li>
+                <li>Оверлоки и петельная машина</li>
+              </ul>
+            </figcaption>
           </figure>
           <figure class="gallery-item">
-            <img src="/static/images/cutting.jpg" alt="Раскроечный стол с лекалами" loading="lazy">
-            <figcaption class="gallery-caption">Раскройный стол</figcaption>
+            <img class="gallery-img" src="/static/images/cutting.jpg" alt="Раскроечный стол с лекалами" loading="lazy">
+            <figcaption class="gallery-caption">
+              <h3 class="gallery-title">Раскройный стол</h3>
+              <ul class="gallery-features">
+                <li>Раскройный стол 3×1,5 м</li>
+                <li>Лекала и дисковый нож</li>
+              </ul>
+            </figcaption>
           </figure>
           <figure class="gallery-item">
-            <img src="/static/images/storage.jpg" alt="Стеллаж с рулонами ткани" loading="lazy">
-            <figcaption class="gallery-caption">Склад тканей</figcaption>
+            <img class="gallery-img" src="/static/images/storage.jpg" alt="Стеллаж с рулонами ткани" loading="lazy">
+            <figcaption class="gallery-caption">
+              <h3 class="gallery-title">Склад тканей</h3>
+              <ul class="gallery-features">
+                <li>Стеллажи с рулонами ткани</li>
+                <li>Учёт остатков по партиям</li>
+              </ul>
+            </figcaption>
           </figure>
           <figure class="gallery-item">
-            <img src="/static/images/delivery.jpg" alt="Стойка с готовой одеждой" loading="lazy">
-            <figcaption class="gallery-caption">Выдача готовых изделий</figcaption>
+            <img class="gallery-img" src="/static/images/delivery.jpg" alt="Стойка с готовой одеждой" loading="lazy">
+            <figcaption class="gallery-caption">
+              <h3 class="gallery-title">Выдача готовых изделий</h3>
+              <ul class="gallery-features">
+                <li>Примерочная зона</li>
+                <li>Упаковка и контроль качества</li>
+              </ul>
+            </figcaption>
           </figure>
+        </div>
+
+        <div class="gallery-dots" aria-hidden="true">
+          <button class="gallery-dot" type="button" aria-label="Швейный участок"></button>
+          <button class="gallery-dot" type="button" aria-label="Раскройный стол"></button>
+          <button class="gallery-dot" type="button" aria-label="Склад тканей"></button>
+          <button class="gallery-dot" type="button" aria-label="Выдача готовых изделий"></button>
         </div>
       </div>
     </section>
@@ -245,6 +276,8 @@
             <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
           </div>
 
+          <div style="display:none;"><input type="text" name="confirm_email_check" autocomplete="off" tabindex="-1"></div>
+
           <button type="submit" class="btn btn-primary btn-block">Отправить заявку</button>
           <p class="field-note">Нажимая «Отправить», вы соглашаетесь на обработку данных для обратной связи.</p>
           <p class="form-status" id="form-status" role="status"></p>
@@ -277,6 +310,8 @@
           <label for="modal-phone">Телефон</label>
           <input type="tel" id="modal-phone" name="phone" placeholder="+7 (___) ___-__-__" required>
         </div>
+
+        <div style="display:none;"><input type="text" name="confirm_email_check" autocomplete="off" tabindex="-1"></div>
 
         <button type="submit" class="btn btn-primary btn-block modal-submit">Отправить заявку</button>
         <p class="field-note">Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.</p>

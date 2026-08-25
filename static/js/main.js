@@ -47,6 +47,12 @@ function bindOrderForm(form) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    const honeypot = form.querySelector('[name="confirm_email_check"]');
+    if (honeypot && honeypot.value !== "") {
+      console.error("Форма отклонена: заполнено honeypot-поле (похоже на спам-бота).");
+      return;
+    }
+
     const submitBtn = form.querySelector("button[type='submit']");
     const formData = new FormData(form);
 
@@ -141,3 +147,42 @@ serviceTabs.forEach((tab) => {
     });
   });
 });
+
+// Слайдер «Наш цех»: точки-индикаторы на мобильных
+const galleryGrid = document.querySelector(".gallery-grid");
+const galleryDots = document.querySelectorAll(".gallery-dot");
+
+if (galleryGrid && galleryDots.length) {
+  const galleryItems = galleryGrid.querySelectorAll(".gallery-item");
+
+  const updateActiveDot = () => {
+    let activeIndex = 0;
+    let minDistance = Infinity;
+
+    galleryItems.forEach((item, index) => {
+      const distance = Math.abs(item.offsetLeft - galleryGrid.scrollLeft);
+      if (distance < minDistance) {
+        minDistance = distance;
+        activeIndex = index;
+      }
+    });
+
+    galleryDots.forEach((dot, index) => {
+      dot.classList.toggle("gallery-dot--active", index === activeIndex);
+    });
+  };
+
+  galleryGrid.addEventListener(
+    "scroll",
+    () => window.requestAnimationFrame(updateActiveDot),
+    { passive: true }
+  );
+
+  galleryDots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      galleryItems[index]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+    });
+  });
+
+  updateActiveDot();
+}
