@@ -158,6 +158,11 @@ h1, h2, h3 {
   white-space: nowrap;
 }
 
+.header-phone:hover,
+.header-phone:focus-visible {
+  color: var(--color-thread);
+}
+
 .nav-toggle {
   display: none;
   position: relative;
@@ -565,6 +570,11 @@ h1, h2, h3 {
 
 .contact-details dd {
   font-weight: 700;
+}
+
+.contact-phone-link:hover,
+.contact-phone-link:focus-visible {
+  color: var(--color-thread);
 }
 
 .contact-form {
