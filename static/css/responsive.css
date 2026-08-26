@@ -1,5 +1,42 @@
-/* === Форма контактов в две колонки на ПК/планшете: ≥ 769px === */
+/* === Блок контактов на ПК/планшете (md и выше): ≥ 769px ===
+   Слева — лейбл, текстовые контакты и карта. Справа — самостоятельная
+   карточка формы со своим заголовком. Мобильную раскладку (≤768px,
+   ниже по файлу) этот блок не затрагивает. */
 @media (min-width: 769px) {
+  .contact-heading {
+    display: none;
+  }
+
+  .contact-card {
+    padding: var(--space-5);
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "info form";
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .contact-info-col {
+    padding: 0;
+  }
+
+  .contact-info-eyebrow {
+    display: inline-flex;
+    margin-bottom: var(--space-2);
+  }
+
+  .contact-form-col {
+    padding: var(--space-4);
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-l);
+    box-shadow: 0 16px 40px rgba(20, 20, 20, 0.08);
+  }
+
+  .contact-form-head {
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+
   .contact-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -50,24 +87,6 @@
     order: -1;
     max-width: 480px;
     margin-inline: auto;
-  }
-
-  .contact-heading,
-  .contact-form-col,
-  .contact-info-col {
-    padding: var(--space-4);
-  }
-
-  .contact-heading {
-    padding-bottom: var(--space-2);
-  }
-
-  .contact-info-col {
-    padding-top: 0;
-  }
-
-  .contact-map {
-    height: 300px;
   }
 }
 
