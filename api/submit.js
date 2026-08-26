@@ -1,5 +1,5 @@
-// Vercel Serverless Function (Node.js): принимает заявку с сайта,
-// пересылает её в Telegram-чат и дублирует данные на вебхук (например, для записи в таблицу).
+// Vercel Serverless Function (Node.js): принимает заявку с сайта и параллельно
+// 1) отправляет её в Telegram-чат, 2) дублирует данные на вебхук (например, в таблицу).
 
 function escapeHtml(value) {
   return String(value)
@@ -8,40 +8,51 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
+// Отправка уведомления в Telegram. Бросает исключение при неудаче —
+// это основной (критичный) канал, его сбой должен вернуть ошибку клиенту.
+async function sendToTelegram({ token, chatId, text }) {
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      parse_mode: "HTML",
+    }),
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(`Telegram API вернул ошибку: ${details}`);
+  }
+}
+
 // Отправка данных заявки на внешний вебхук (Zapier / Make / Google Apps Script Web App и т.п.).
-// Возвращает false вместо исключения — сбой вебхука не должен ронять отправку заявки,
-// Telegram-уведомление остаётся основным (критичным) каналом.
+// Тоже бросает исключение при неудаче, но в handler эта ошибка не приводит
+// к ответу с ошибкой клиенту — вебхук вспомогательный, а не критичный канал.
 async function sendToWebhook({ date, name, phone, product, qty, total }) {
   const webhookUrl = process.env.SHEETS_WEBHOOK_URL;
 
   if (!webhookUrl) {
-    console.error("Не задана переменная окружения SHEETS_WEBHOOK_URL — вебхук пропущен");
-    return false;
+    throw new Error("Не задана переменная окружения SHEETS_WEBHOOK_URL — вебхук пропущен");
   }
 
-  try {
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        Дата: date,
-        Имя: name,
-        Телефон: phone,
-        Изделие: product,
-        Тираж: qty,
-        Сумма: total,
-      }),
-    });
+  const response = await fetch(webhookUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      Дата: date,
+      Имя: name,
+      Телефон: phone,
+      Изделие: product,
+      Тираж: qty,
+      Сумма: total,
+    }),
+  });
 
-    if (!response.ok) {
-      console.error("Вебхук вернул ошибку:", response.status, await response.text());
-      return false;
-    }
-
-    return true;
-  } catch (error) {
-    console.error("Ошибка запроса к вебхуку:", error);
-    return false;
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(`Вебхук вернул ошибку ${response.status}: ${details}`);
   }
 }
 
@@ -78,6 +89,8 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: "Сервер не настроен" });
   }
 
+  const date = new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
+
   const textLines = [
     "🧵 <b>Новая заявка с сайта «Стежок»</b>",
     "",
@@ -91,38 +104,28 @@ module.exports = async function handler(req, res) {
 
   const text = textLines.join("\n");
 
-  try {
-    const telegramResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text,
-        parse_mode: "HTML",
-      }),
-    });
+  // Оба запроса стартуют одновременно и независимо друг от друга.
+  const [telegramResult, webhookResult] = await Promise.allSettled([
+    sendToTelegram({ token, chatId, text }),
+    sendToWebhook({
+      date,
+      name,
+      phone,
+      product: calcProduct,
+      qty: calcQty,
+      total: calcTotal,
+    }),
+  ]);
 
-    if (!telegramResponse.ok) {
-      const details = await telegramResponse.text();
-      console.error("Telegram API вернул ошибку:", details);
-      return res.status(502).json({ error: "Не удалось отправить сообщение в Telegram" });
-    }
-  } catch (error) {
-    console.error("Ошибка запроса к Telegram API:", error);
-    return res.status(500).json({ error: "Внутренняя ошибка сервера" });
+  if (webhookResult.status === "rejected") {
+    // Вебхук вспомогательный — логируем ошибку, но не роняем ответ пользователю.
+    console.error(webhookResult.reason?.message || webhookResult.reason);
   }
 
-  // Дублируем заявку на вебхук — уже после того, как она гарантированно долетела в Telegram.
-  // Сбой здесь не должен возвращать ошибку пользователю: заявка уже принята.
-  const date = new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
-  await sendToWebhook({
-    date,
-    name,
-    phone,
-    product: calcProduct,
-    qty: calcQty,
-    total: calcTotal,
-  });
+  if (telegramResult.status === "rejected") {
+    console.error(telegramResult.reason?.message || telegramResult.reason);
+    return res.status(502).json({ error: "Не удалось отправить заявку" });
+  }
 
   return res.status(200).json({ ok: true });
 };
