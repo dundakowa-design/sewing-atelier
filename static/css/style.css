@@ -320,6 +320,26 @@ h1, h2, h3 {
   margin-top: var(--space-2);
 }
 
+/* === Правовые документы (политика конфиденциальности и т.п.) === */
+.legal-content {
+  max-width: 70ch;
+}
+
+.legal-content h2 {
+  font-size: var(--fs-h3);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.legal-content h2:first-child {
+  margin-top: 0;
+}
+
+.legal-content p {
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-2);
+}
+
 /* === Услуги === */
 .service-tabs {
   display: inline-flex;
@@ -668,7 +688,7 @@ h1, h2, h3 {
   color: var(--color-ink-soft);
 }
 
-.modal-calc-summary {
+.calc-summary-note {
   padding: var(--space-2);
   margin-bottom: var(--space-3);
   background: var(--color-linen);
@@ -913,89 +933,6 @@ h1, h2, h3 {
   color: var(--color-thread-dark);
 }
 
-/* === Модальное окно заявки === */
-body.modal-open {
-  overflow: hidden;
-}
-
-.modal {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  border: none;
-  border-radius: 20px;
-  padding: 0;
-  width: min(92vw, 420px);
-  height: auto;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: #fff;
-  box-shadow: 0 24px 60px rgba(20, 20, 20, 0.25);
-}
-
-.modal::backdrop {
-  background: rgba(30, 34, 34, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.modal-card {
-  position: relative;
-  padding: var(--space-4) var(--space-3) 32px;
-}
-
-.modal-close {
-  position: absolute;
-  top: var(--space-2);
-  right: var(--space-2);
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: none;
-  border-radius: 50%;
-  padding: 0;
-}
-
-.modal-close:focus-visible {
-  outline: 2px solid var(--color-thread);
-  outline-offset: 2px;
-}
-
-.modal-close::before,
-.modal-close::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 16px;
-  height: 1.5px;
-  background: var(--color-ink);
-}
-
-.modal-close::before {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.modal-close::after {
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.modal-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.6rem;
-  padding-right: var(--space-4);
-}
-
-.modal-lead {
-  color: var(--color-ink-soft);
-  margin-top: var(--space-1);
-  margin-bottom: var(--space-3);
-}
-
-.modal-submit {
-  border-radius: 999px;
-}
-
 /* === Подвал === */
 .site-footer {
   border-top: 1px solid var(--color-line);
@@ -1014,4 +951,14 @@ body.modal-open {
 
 .footer-inner .logo {
   font-size: 1rem;
+}
+
+.footer-legal-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer-legal-link:hover,
+.footer-legal-link:focus-visible {
+  color: var(--color-thread);
 }

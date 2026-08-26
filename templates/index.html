@@ -29,7 +29,7 @@
         <a class="nav-link" href="#workshop">Цех</a>
         <a class="nav-link" href="#process">Процесс</a>
         <a class="nav-link" href="#contact">Контакты</a>
-        <a href="#contact" class="btn btn-primary nav-cta js-open-modal">Оставить заявку</a>
+        <a href="#contact" class="btn btn-primary nav-cta js-focus-contact-form">Оставить заявку</a>
       </nav>
 
       <div class="header-actions">
@@ -74,7 +74,7 @@
         </div>
 
         <p class="hero-media-heading">Шьём одежду, которая держит <em>форму</em></p>
-        <a href="#contact" class="btn btn-primary hero-media-cta js-open-modal">Оставить заявку</a>
+        <a href="#contact" class="btn btn-primary hero-media-cta js-focus-contact-form">Оставить заявку</a>
       </div>
     </section>
 
@@ -100,7 +100,7 @@
               <h3 class="service-card-title">Пошив по меркам</h3>
               <p class="service-card-desc">Индивидуальные лекала и примерки — вещь садится точно на фигуру.</p>
               <p class="service-card-price">от 8 000 ₽</p>
-              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+              <a href="#contact" class="service-card-link js-focus-contact-form">Рассчитать стоимость</a>
             </div>
           </article>
 
@@ -110,7 +110,7 @@
               <h3 class="service-card-title">Ремонт и подгонка</h3>
               <p class="service-card-desc">Ушить, удлинить, заменить молнию — вернём вещи вторую жизнь.</p>
               <p class="service-card-price">от 500 ₽</p>
-              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+              <a href="#contact" class="service-card-link js-focus-contact-form">Рассчитать стоимость</a>
             </div>
           </article>
         </div>
@@ -122,7 +122,7 @@
               <h3 class="service-card-title">Мелкосерийное производство</h3>
               <p class="service-card-desc">Партии от 20 изделий: форма, спецодежда, коллекции малых брендов.</p>
               <p class="service-card-price">по запросу за партию</p>
-              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+              <a href="#contact" class="service-card-link js-focus-contact-form">Рассчитать стоимость</a>
             </div>
           </article>
 
@@ -132,7 +132,7 @@
               <h3 class="service-card-title">Спецодежда и форма</h3>
               <p class="service-card-desc">Рабочая и корпоративная форма с нанесением логотипа.</p>
               <p class="service-card-price">от 3 500 ₽/комплект</p>
-              <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
+              <a href="#contact" class="service-card-link js-focus-contact-form">Рассчитать стоимость</a>
             </div>
           </article>
         </div>
@@ -237,7 +237,7 @@
               <strong id="calc-unit-price">300 ₽</strong>
             </div>
 
-            <button type="button" class="btn btn-primary btn-block calc-cta js-open-modal" id="calc-cta">Оформить заказ по этому расчёту</button>
+            <button type="button" class="btn btn-primary btn-block calc-cta" id="calc-cta">Оформить заказ по этому расчёту</button>
             <p class="calc-note">Расчёт ориентировочный — точную стоимость подтвердим после консультации.</p>
           </div>
         </div>
@@ -390,6 +390,12 @@
             <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
           </div>
 
+          <p class="calc-summary-note" id="calc-summary-display" hidden></p>
+          <input type="hidden" name="calc_summary" id="calc-field-summary">
+          <input type="hidden" name="calc_product" id="calc-field-product">
+          <input type="hidden" name="calc_qty" id="calc-field-qty">
+          <input type="hidden" name="calc_total" id="calc-field-total">
+
           <div style="display:none;"><input type="text" name="confirm_email_check" autocomplete="off" tabindex="-1"></div>
 
           <button type="submit" class="btn btn-primary btn-block">Отправить заявку</button>
@@ -403,42 +409,9 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <span class="logo">СТЕЖ<span>О</span>К</span>
-      <span class="footer-legal">© 2026 Пошивочный цех «Стежок». Все права защищены. Политика конфиденциальности.</span>
+      <span class="footer-legal">© 2026 Пошивочный цех «Стежок». Все права защищены. <a href="/privacy" class="footer-legal-link">Политика конфиденциальности</a>.</span>
     </div>
   </footer>
-
-  <dialog class="modal" id="contact-modal">
-    <div class="modal-card">
-      <button type="button" class="modal-close" aria-label="Закрыть"></button>
-
-      <h2 class="modal-title">Обсудить проект</h2>
-      <p class="modal-lead">Оставьте контакты, и мы перезвоним вам в течение дня.</p>
-
-      <form class="modal-form" id="modal-order-form" action="/order" method="post">
-        <div class="field">
-          <label for="modal-name">Ваше имя</label>
-          <input type="text" id="modal-name" name="name" placeholder="Как к вам обращаться" autocapitalize="words" autofocus required>
-        </div>
-
-        <div class="field">
-          <label for="modal-phone">Телефон</label>
-          <input type="tel" id="modal-phone" name="phone" placeholder="+7 (___) ___-__-__" required>
-        </div>
-
-        <p class="modal-calc-summary" id="modal-calc-summary" hidden></p>
-        <input type="hidden" name="calc_summary" id="modal-calc-field">
-        <input type="hidden" name="calc_product" id="modal-calc-product">
-        <input type="hidden" name="calc_qty" id="modal-calc-qty">
-        <input type="hidden" name="calc_total" id="modal-calc-total">
-
-        <div style="display:none;"><input type="text" name="confirm_email_check" autocomplete="off" tabindex="-1"></div>
-
-        <button type="submit" class="btn btn-primary btn-block modal-submit">Отправить заявку</button>
-        <p class="field-note">Нажимая «Отправить», вы соглашаетесь на обработку персональных данных.</p>
-        <p class="form-status" id="modal-form-status" role="status"></p>
-      </form>
-    </div>
-  </dialog>
 
   <script src="/static/js/main.js"></script>
 </body>

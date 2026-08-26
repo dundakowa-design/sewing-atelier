@@ -21,6 +21,12 @@ async def index(request: Request):
     return templates.TemplateResponse(request, "index.html")
 
 
+@app.get("/privacy")
+async def privacy(request: Request):
+    """Политика конфиденциальности."""
+    return templates.TemplateResponse(request, "privacy.html")
+
+
 @app.post("/order")
 async def order(name: str = Form(...), phone: str = Form(...)):
     """

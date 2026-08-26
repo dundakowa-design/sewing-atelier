@@ -206,9 +206,11 @@ function bindOrderForm(form) {
         formStatus.dataset.state = "success";
         form.reset();
 
-        const parentModal = form.closest("dialog.modal");
-        if (parentModal) {
-          setTimeout(() => parentModal.close(), 1400);
+        // form.reset() не трогает обычный <p> — сводку калькулятора прячем вручную
+        const calcDisplay = form.querySelector("#calc-summary-display");
+        if (calcDisplay) {
+          calcDisplay.textContent = "";
+          calcDisplay.hidden = true;
         }
       } else {
         formStatus.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
@@ -223,63 +225,18 @@ function bindOrderForm(form) {
   });
 }
 
-document.querySelectorAll(".contact-form, .modal-form").forEach(bindOrderForm);
+document.querySelectorAll(".contact-form").forEach(bindOrderForm);
 
-// Модальное окно заявки
-const contactModal = document.querySelector("#contact-modal");
-const modalTriggers = document.querySelectorAll(".js-open-modal");
-const modalClose = contactModal?.querySelector(".modal-close");
-
-if (contactModal) {
-  const openModal = () => {
-    contactModal.showModal();
-    document.body.classList.add("modal-open");
-  };
-
-  const closeModal = () => {
-    contactModal.close();
-  };
-
-  modalTriggers.forEach((trigger) => {
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
-      openModal();
-    });
+// Кнопки-приглашения ведут на единственную форму заявки внизу страницы (#contact).
+// Переход по ссылке — обычный, браузер сам плавно проскроллит (scroll-behavior: smooth в reset.css);
+// здесь только через паузу ставим фокус в первое поле, чтобы можно было сразу печатать.
+document.querySelectorAll(".js-focus-contact-form").forEach((trigger) => {
+  trigger.addEventListener("click", () => {
+    window.setTimeout(() => {
+      document.querySelector("#order-form input[name='name']")?.focus();
+    }, 500);
   });
-
-  modalClose?.addEventListener("click", closeModal);
-
-  // Закрытие по клику на затемнённый фон вокруг карточки
-  contactModal.addEventListener("click", (event) => {
-    const rect = contactModal.getBoundingClientRect();
-    const clickedInside =
-      event.clientX >= rect.left &&
-      event.clientX <= rect.right &&
-      event.clientY >= rect.top &&
-      event.clientY <= rect.bottom;
-
-    if (!clickedInside) {
-      closeModal();
-    }
-  });
-
-  // Esc закрывает <dialog> нативно; здесь только снимаем блокировку скролла
-  contactModal.addEventListener("close", () => {
-    document.body.classList.remove("modal-open");
-
-    // Сводка из калькулятора актуальна только для того запуска, где её подставили
-    const calcFields = contactModal.querySelectorAll(
-      "#modal-calc-field, #modal-calc-product, #modal-calc-qty, #modal-calc-total"
-    );
-    calcFields.forEach((field) => (field.value = ""));
-
-    const calcDisplay = contactModal.querySelector("#modal-calc-summary");
-    if (calcDisplay) {
-      calcDisplay.textContent = "";
-      calcDisplay.hidden = true;
-    }
-  });
-}
+});
 
 // Табы услуг: «Для себя» / «Для бизнеса»
 const serviceTabs = document.querySelectorAll(".service-tab");
@@ -439,8 +396,8 @@ if (calcSection) {
     parts.push(`партия ≈ ${rub.format(total)} ₽ (${rub.format(unitPrice)} ₽/шт)`);
     const summary = parts.join(", ");
 
-    const calcField = document.querySelector("#modal-calc-field");
-    const calcDisplay = document.querySelector("#modal-calc-summary");
+    const calcField = document.querySelector("#calc-field-summary");
+    const calcDisplay = document.querySelector("#calc-summary-display");
     if (calcField) calcField.value = summary;
     if (calcDisplay) {
       calcDisplay.textContent = summary;
@@ -449,12 +406,18 @@ if (calcSection) {
 
     // Отдельные структурированные поля — чтобы бэкенд не парсил текстовую сводку регуляркой,
     // а писал в Google Таблицу и Telegram уже готовые значения.
-    const productField = document.querySelector("#modal-calc-product");
-    const qtyField = document.querySelector("#modal-calc-qty");
-    const totalField = document.querySelector("#modal-calc-total");
+    const productField = document.querySelector("#calc-field-product");
+    const qtyField = document.querySelector("#calc-field-qty");
+    const totalField = document.querySelector("#calc-field-total");
     if (productField) productField.value = product.name;
     if (qtyField) qtyField.value = String(qty);
     if (totalField) totalField.value = String(total);
+
+    // У calc-cta нет href — плавный переход к форме и фокус на первое поле делаем сами.
+    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.setTimeout(() => {
+      document.querySelector("#order-form input[name='name']")?.focus();
+    }, 500);
   });
 
   calculate();
