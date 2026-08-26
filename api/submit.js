@@ -1,10 +1,48 @@
-// Vercel Serverless Function (Node.js): принимает заявку с сайта и пересылает её в Telegram-чат.
+// Vercel Serverless Function (Node.js): принимает заявку с сайта,
+// пересылает её в Telegram-чат и дублирует данные на вебхук (например, для записи в таблицу).
 
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+// Отправка данных заявки на внешний вебхук (Zapier / Make / Google Apps Script Web App и т.п.).
+// Возвращает false вместо исключения — сбой вебхука не должен ронять отправку заявки,
+// Telegram-уведомление остаётся основным (критичным) каналом.
+async function sendToWebhook({ date, name, phone, product, qty, total }) {
+  const webhookUrl = process.env.SHEETS_WEBHOOK_URL;
+
+  if (!webhookUrl) {
+    console.error("Не задана переменная окружения SHEETS_WEBHOOK_URL — вебхук пропущен");
+    return false;
+  }
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        Дата: date,
+        Имя: name,
+        Телефон: phone,
+        Изделие: product,
+        Тираж: qty,
+        Сумма: total,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Вебхук вернул ошибку:", response.status, await response.text());
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Ошибка запроса к вебхуку:", error);
+    return false;
+  }
 }
 
 module.exports = async function handler(req, res) {
@@ -17,6 +55,9 @@ module.exports = async function handler(req, res) {
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const phone = typeof body.phone === "string" ? body.phone.trim() : "";
   const calcSummary = typeof body.calc_summary === "string" ? body.calc_summary.trim() : "";
+  const calcProduct = typeof body.calc_product === "string" ? body.calc_product.trim() : "";
+  const calcQty = typeof body.calc_qty === "string" ? body.calc_qty.trim() : "";
+  const calcTotal = typeof body.calc_total === "string" ? body.calc_total.trim() : "";
   const honeypot = body.confirm_email_check;
 
   // Honeypot: если скрытое поле заполнено — это бот. Тихо отвечаем "успехом",
@@ -66,10 +107,22 @@ module.exports = async function handler(req, res) {
       console.error("Telegram API вернул ошибку:", details);
       return res.status(502).json({ error: "Не удалось отправить сообщение в Telegram" });
     }
-
-    return res.status(200).json({ ok: true });
   } catch (error) {
     console.error("Ошибка запроса к Telegram API:", error);
     return res.status(500).json({ error: "Внутренняя ошибка сервера" });
   }
+
+  // Дублируем заявку на вебхук — уже после того, как она гарантированно долетела в Telegram.
+  // Сбой здесь не должен возвращать ошибку пользователю: заявка уже принята.
+  const date = new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
+  await sendToWebhook({
+    date,
+    name,
+    phone,
+    product: calcProduct,
+    qty: calcQty,
+    total: calcTotal,
+  });
+
+  return res.status(200).json({ ok: true });
 };

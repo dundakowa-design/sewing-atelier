@@ -1,0 +1,14 @@
+# Node.js
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Переменные окружения (секреты не должны попадать в git)
+.env
+.env.*
+
+# Vercel
+.vercel/

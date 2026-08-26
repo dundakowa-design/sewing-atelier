@@ -268,9 +268,12 @@ if (contactModal) {
     document.body.classList.remove("modal-open");
 
     // Сводка из калькулятора актуальна только для того запуска, где её подставили
-    const calcField = contactModal.querySelector("#modal-calc-field");
+    const calcFields = contactModal.querySelectorAll(
+      "#modal-calc-field, #modal-calc-product, #modal-calc-qty, #modal-calc-total"
+    );
+    calcFields.forEach((field) => (field.value = ""));
+
     const calcDisplay = contactModal.querySelector("#modal-calc-summary");
-    if (calcField) calcField.value = "";
     if (calcDisplay) {
       calcDisplay.textContent = "";
       calcDisplay.hidden = true;
@@ -418,6 +421,15 @@ if (calcSection) {
       calcDisplay.textContent = summary;
       calcDisplay.hidden = false;
     }
+
+    // Отдельные структурированные поля — чтобы бэкенд не парсил текстовую сводку регуляркой,
+    // а писал в Google Таблицу и Telegram уже готовые значения.
+    const productField = document.querySelector("#modal-calc-product");
+    const qtyField = document.querySelector("#modal-calc-qty");
+    const totalField = document.querySelector("#modal-calc-total");
+    if (productField) productField.value = product.name;
+    if (qtyField) qtyField.value = String(qty);
+    if (totalField) totalField.value = String(total);
   });
 
   calculate();
