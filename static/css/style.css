@@ -421,6 +421,254 @@ h1, h2, h3 {
   color: var(--color-thread);
 }
 
+/* === Калькулятор стоимости === */
+.calc {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.calc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+}
+
+.calc-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.calc-label {
+  font-size: var(--fs-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-soft);
+}
+
+.calc-products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.calc-product {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  padding: var(--space-2);
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-s);
+  background: #fff;
+  text-align: left;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.calc-product:hover {
+  border-color: var(--color-thread);
+}
+
+.calc-product[aria-pressed="true"] {
+  border-color: var(--color-thread);
+  background: var(--color-linen);
+}
+
+.calc-product-name {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.calc-product-price {
+  font-size: var(--fs-label);
+  color: var(--color-ink-soft);
+}
+
+.calc-product[aria-pressed="true"] .calc-product-price {
+  color: var(--color-thread);
+}
+
+.calc-qty-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.calc-qty-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--color-thread);
+}
+
+.calc-slider {
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-line);
+  appearance: none;
+  cursor: pointer;
+}
+
+.calc-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-thread);
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(20, 20, 20, 0.3);
+}
+
+.calc-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-thread);
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(20, 20, 20, 0.3);
+}
+
+.calc-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-label);
+  color: var(--color-ink-soft);
+}
+
+.calc-discount-hint {
+  font-size: var(--fs-small);
+  color: var(--color-thread);
+  font-weight: 700;
+}
+
+.calc-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.calc-option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.calc-option-box {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-s);
+  position: relative;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.calc-option input:checked ~ .calc-option-box {
+  background: var(--color-thread);
+  border-color: var(--color-thread);
+}
+
+.calc-option input:checked ~ .calc-option-box::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 6px;
+  height: 11px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.calc-option input:focus-visible ~ .calc-option-box {
+  border-color: var(--color-thread);
+}
+
+.calc-option-text {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-small);
+}
+
+.calc-option-text strong {
+  color: var(--color-ink);
+}
+
+.calc-option-text span {
+  color: var(--color-ink-soft);
+}
+
+.calc-result {
+  position: sticky;
+  top: calc(var(--space-4) + 60px);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  background: var(--color-linen);
+  border-radius: var(--radius-m);
+  text-align: center;
+}
+
+.calc-result-label {
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-soft);
+}
+
+.calc-result-total {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2.2rem;
+  color: var(--color-thread);
+  margin-top: 0.2em;
+}
+
+.calc-result-unit {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-line);
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
+.calc-result-unit strong {
+  color: var(--color-ink);
+}
+
+.calc-cta {
+  margin-top: var(--space-3);
+}
+
+.calc-note {
+  margin-top: var(--space-2);
+  font-size: var(--fs-label);
+  color: var(--color-ink-soft);
+}
+
+.modal-calc-summary {
+  padding: var(--space-2);
+  margin-bottom: var(--space-3);
+  background: var(--color-linen);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-s);
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
 /* === Галерея цеха === */
 .gallery-grid {
   display: grid;

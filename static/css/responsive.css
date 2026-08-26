@@ -4,6 +4,14 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .calc {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-result {
+    position: static;
+  }
+
   .process-list {
     grid-template-columns: repeat(3, 1fr);
     row-gap: var(--space-4);
@@ -34,6 +42,14 @@
   .header-phone,
   .header-cta {
     display: none;
+  }
+
+  .calc-panel {
+    padding: var(--space-3);
+  }
+
+  .calc-products {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .nav-toggle {

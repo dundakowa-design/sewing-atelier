@@ -266,6 +266,15 @@ if (contactModal) {
   // Esc закрывает <dialog> нативно; здесь только снимаем блокировку скролла
   contactModal.addEventListener("close", () => {
     document.body.classList.remove("modal-open");
+
+    // Сводка из калькулятора актуальна только для того запуска, где её подставили
+    const calcField = contactModal.querySelector("#modal-calc-field");
+    const calcDisplay = contactModal.querySelector("#modal-calc-summary");
+    if (calcField) calcField.value = "";
+    if (calcDisplay) {
+      calcDisplay.textContent = "";
+      calcDisplay.hidden = true;
+    }
   });
 }
 
@@ -325,4 +334,91 @@ if (galleryGrid && galleryDots.length) {
   });
 
   updateActiveDot();
+}
+
+// Калькулятор стоимости пошива
+const calcSection = document.querySelector("#calculator");
+
+if (calcSection) {
+  const productButtons = calcSection.querySelectorAll(".calc-product");
+  const qtySlider = calcSection.querySelector("#calc-qty");
+  const qtyValueEl = calcSection.querySelector("#calc-qty-value");
+  const discountHintEl = calcSection.querySelector("#calc-discount-hint");
+  const patternsCheckbox = calcSection.querySelector("#calc-patterns");
+  const brandingCheckbox = calcSection.querySelector("#calc-branding");
+  const totalEl = calcSection.querySelector("#calc-total");
+  const unitPriceEl = calcSection.querySelector("#calc-unit-price");
+  const ctaBtn = calcSection.querySelector("#calc-cta");
+
+  const rub = new Intl.NumberFormat("ru-RU");
+
+  const getSelectedProduct = () => {
+    const active = calcSection.querySelector('.calc-product[aria-pressed="true"]');
+    return { name: active.dataset.name, price: Number(active.dataset.price) };
+  };
+
+  const getDiscountMultiplier = (qty) => {
+    if (qty > 500) return 0.85;
+    if (qty > 100) return 0.9;
+    return 1;
+  };
+
+  const updateDiscountHint = (qty) => {
+    if (qty > 500) {
+      discountHintEl.textContent = "Скидка 15% — тираж больше 500 шт.";
+    } else if (qty > 100) {
+      discountHintEl.textContent = "Скидка 10% — тираж от 101 до 500 шт.";
+    } else {
+      discountHintEl.textContent = "Базовая цена — скидка начинается со 101 шт.";
+    }
+  };
+
+  const calculate = () => {
+    const product = getSelectedProduct();
+    const qty = Number(qtySlider.value);
+
+    qtyValueEl.textContent = qty + " шт";
+    updateDiscountHint(qty);
+
+    const unitBase = product.price + (brandingCheckbox.checked ? 100 : 0);
+    const unitPrice = Math.round(unitBase * getDiscountMultiplier(qty));
+    const total = unitPrice * qty + (patternsCheckbox.checked ? 3000 : 0);
+
+    totalEl.textContent = rub.format(total) + " ₽";
+    unitPriceEl.textContent = rub.format(unitPrice) + " ₽";
+
+    return { product, qty, unitPrice, total };
+  };
+
+  productButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      productButtons.forEach((otherBtn) => otherBtn.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      calculate();
+    });
+  });
+
+  qtySlider.addEventListener("input", calculate);
+  patternsCheckbox.addEventListener("change", calculate);
+  brandingCheckbox.addEventListener("change", calculate);
+
+  ctaBtn.addEventListener("click", () => {
+    const { product, qty, unitPrice, total } = calculate();
+
+    const parts = [`Расчёт с сайта: ${product.name}`, `тираж ${qty} шт.`];
+    if (patternsCheckbox.checked) parts.push("разработка лекал с нуля");
+    if (brandingCheckbox.checked) parts.push("брендирование/вышивка");
+    parts.push(`партия ≈ ${rub.format(total)} ₽ (${rub.format(unitPrice)} ₽/шт)`);
+    const summary = parts.join(", ");
+
+    const calcField = document.querySelector("#modal-calc-field");
+    const calcDisplay = document.querySelector("#modal-calc-summary");
+    if (calcField) calcField.value = summary;
+    if (calcDisplay) {
+      calcDisplay.textContent = summary;
+      calcDisplay.hidden = false;
+    }
+  });
+
+  calculate();
 }

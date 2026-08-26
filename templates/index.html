@@ -25,6 +25,7 @@
 
       <nav class="nav" aria-label="Основная навигация">
         <a class="nav-link" href="#services">Услуги</a>
+        <a class="nav-link" href="#calculator">Калькулятор</a>
         <a class="nav-link" href="#workshop">Цех</a>
         <a class="nav-link" href="#process">Процесс</a>
         <a class="nav-link" href="#contact">Контакты</a>
@@ -134,6 +135,102 @@
               <a href="#contact" class="service-card-link js-open-modal">Рассчитать стоимость</a>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <hr class="stitch-divider">
+
+    <!-- КАЛЬКУЛЯТОР -->
+    <section class="section" id="calculator">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Посчитайте сами</span>
+          <h2 class="section-title">Калькулятор стоимости пошива</h2>
+          <p class="section-lead">Выберите изделие, тираж от 20&nbsp;шт и опции — покажем ориентировочную стоимость партии. Точную цену подтвердим после расчёта лекал.</p>
+        </div>
+
+        <div class="calc">
+          <div class="calc-panel">
+            <div class="calc-field">
+              <span class="calc-label">Тип изделия</span>
+              <div class="calc-products" role="radiogroup" aria-label="Тип изделия">
+                <button type="button" class="calc-product" data-price="300" data-name="Футболка / Топ" aria-pressed="true">
+                  <span class="calc-product-name">Футболка / Топ</span>
+                  <span class="calc-product-price">от 300 ₽</span>
+                </button>
+                <button type="button" class="calc-product" data-price="500" data-name="Худи / Свитшот" aria-pressed="false">
+                  <span class="calc-product-name">Худи / Свитшот</span>
+                  <span class="calc-product-price">от 500 ₽</span>
+                </button>
+                <button type="button" class="calc-product" data-price="800" data-name="Брюки / Юбка" aria-pressed="false">
+                  <span class="calc-product-name">Брюки / Юбка</span>
+                  <span class="calc-product-price">от 800 ₽</span>
+                </button>
+                <button type="button" class="calc-product" data-price="1200" data-name="Платье / Рубашка" aria-pressed="false">
+                  <span class="calc-product-name">Платье / Рубашка</span>
+                  <span class="calc-product-price">от 1 200 ₽</span>
+                </button>
+                <button type="button" class="calc-product" data-price="2500" data-name="Жакет / Пиджак" aria-pressed="false">
+                  <span class="calc-product-name">Жакет / Пиджак</span>
+                  <span class="calc-product-price">от 2 500 ₽</span>
+                </button>
+                <button type="button" class="calc-product" data-price="3000" data-name="Пальто / Верхняя одежда" aria-pressed="false">
+                  <span class="calc-product-name">Пальто / Верхняя одежда</span>
+                  <span class="calc-product-price">от 3 000 ₽</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="calc-field">
+              <div class="calc-qty-head">
+                <span class="calc-label">Тираж</span>
+                <span class="calc-qty-value" id="calc-qty-value">20 шт</span>
+              </div>
+              <input type="range" class="calc-slider" id="calc-qty" min="20" max="1000" step="10" value="20" aria-label="Тираж, штук">
+              <div class="calc-slider-scale" aria-hidden="true">
+                <span>20</span>
+                <span>500</span>
+                <span>1000+</span>
+              </div>
+              <p class="calc-discount-hint" id="calc-discount-hint">Базовая цена — скидка начинается со 101 шт.</p>
+            </div>
+
+            <div class="calc-field">
+              <span class="calc-label">Дополнительно</span>
+
+              <label class="calc-option">
+                <input type="checkbox" id="calc-patterns">
+                <span class="calc-option-box"></span>
+                <span class="calc-option-text">
+                  <strong>Разработка лекал с нуля</strong>
+                  <span>+3 000 ₽ к партии</span>
+                </span>
+              </label>
+
+              <label class="calc-option">
+                <input type="checkbox" id="calc-branding">
+                <span class="calc-option-box"></span>
+                <span class="calc-option-text">
+                  <strong>Брендирование / вышивка</strong>
+                  <span>+100 ₽ за изделие</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="calc-result">
+            <span class="calc-result-label">Примерная стоимость партии</span>
+            <strong class="calc-result-total" id="calc-total">6 000 ₽</strong>
+
+            <div class="calc-result-unit">
+              <span>Цена за 1 шт:</span>
+              <strong id="calc-unit-price">300 ₽</strong>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-block calc-cta js-open-modal" id="calc-cta">Оформить заказ по этому расчёту</button>
+            <p class="calc-note">Расчёт ориентировочный — точную стоимость подтвердим после консультации.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -318,6 +415,9 @@
           <label for="modal-phone">Телефон</label>
           <input type="tel" id="modal-phone" name="phone" placeholder="+7 (___) ___-__-__" required>
         </div>
+
+        <p class="modal-calc-summary" id="modal-calc-summary" hidden></p>
+        <input type="hidden" name="calc_summary" id="modal-calc-field">
 
         <div style="display:none;"><input type="text" name="confirm_email_check" autocomplete="off" tabindex="-1"></div>
 

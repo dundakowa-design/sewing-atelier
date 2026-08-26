@@ -16,6 +16,7 @@ module.exports = async function handler(req, res) {
   const body = req.body || {};
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const phone = typeof body.phone === "string" ? body.phone.trim() : "";
+  const calcSummary = typeof body.calc_summary === "string" ? body.calc_summary.trim() : "";
   const honeypot = body.confirm_email_check;
 
   // Honeypot: если скрытое поле заполнено — это бот. Тихо отвечаем "успехом",
@@ -36,12 +37,18 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: "Сервер не настроен" });
   }
 
-  const text = [
+  const textLines = [
     "🧵 <b>Новая заявка с сайта «Стежок»</b>",
     "",
     `👤 <b>Имя:</b> ${escapeHtml(name)}`,
     `📞 <b>Телефон:</b> ${escapeHtml(phone)}`,
-  ].join("\n");
+  ];
+
+  if (calcSummary) {
+    textLines.push("", `🧮 <b>Расчёт из калькулятора:</b> ${escapeHtml(calcSummary)}`);
+  }
+
+  const text = textLines.join("\n");
 
   try {
     const telegramResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
