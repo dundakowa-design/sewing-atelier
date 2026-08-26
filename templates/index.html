@@ -409,9 +409,23 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <span class="logo">СТЕЖ<span>О</span>К</span>
-      <span class="footer-legal">© 2026 Пошивочный цех «Стежок». Все права защищены. <a href="/privacy" class="footer-legal-link">Политика конфиденциальности</a>.</span>
+      <span class="footer-legal">© 2026 Пошивочный цех «Стежок». Все права защищены. <a href="/privacy" class="footer-legal-link" id="privacy-trigger">Политика конфиденциальности</a>.</span>
     </div>
   </footer>
+
+  <dialog class="modal" id="privacy-modal">
+    <button type="button" class="modal-close" aria-label="Закрыть"></button>
+    <div class="modal-scroll">
+      <div class="modal-card">
+        <h2 class="modal-title">Политика конфиденциальности</h2>
+        <p class="modal-lead">Действует с 27&nbsp;августа 2026&nbsp;года. Регулирует обработку персональных данных, которые вы оставляете через сайт stezhok.ru.</p>
+
+        <div class="legal-content">
+          {% include "_privacy_content.html" %}
+        </div>
+      </div>
+    </div>
+  </dialog>
 
   <script src="/static/js/main.js"></script>
 </body>

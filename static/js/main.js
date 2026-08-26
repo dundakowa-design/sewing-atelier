@@ -40,6 +40,50 @@ if (navToggle && nav && navOverlay) {
   });
 }
 
+// Модальное окно политики конфиденциальности
+const privacyModal = document.querySelector("#privacy-modal");
+const privacyTrigger = document.querySelector("#privacy-trigger");
+const privacyClose = privacyModal?.querySelector(".modal-close");
+
+if (privacyModal && privacyTrigger) {
+  const openPrivacyModal = () => {
+    privacyModal.showModal();
+    document.body.classList.add("modal-open");
+  };
+
+  const closePrivacyModal = () => {
+    privacyModal.close();
+  };
+
+  // Ссылка ведёт на /privacy как рабочий вариант без JS; при включённом JS
+  // открываем то же содержимое в модалке, не покидая страницу.
+  privacyTrigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    openPrivacyModal();
+  });
+
+  privacyClose?.addEventListener("click", closePrivacyModal);
+
+  // Закрытие по клику на затемнённый фон вокруг окна
+  privacyModal.addEventListener("click", (event) => {
+    const rect = privacyModal.getBoundingClientRect();
+    const clickedInside =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+
+    if (!clickedInside) {
+      closePrivacyModal();
+    }
+  });
+
+  // Esc закрывает <dialog> нативно; здесь только снимаем блокировку скролла
+  privacyModal.addEventListener("close", () => {
+    document.body.classList.remove("modal-open");
+  });
+}
+
 // Маска телефона: +7 (___) ___-__-__
 function formatPhoneDigits(digits) {
   let result = "+7";
