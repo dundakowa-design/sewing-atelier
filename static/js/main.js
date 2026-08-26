@@ -343,6 +343,8 @@ if (galleryGrid && galleryDots.length) {
 const calcSection = document.querySelector("#calculator");
 
 if (calcSection) {
+  const modeButtons = calcSection.querySelectorAll(".calc-mode .service-tab");
+  const modeHintEl = calcSection.querySelector("#calc-mode-hint");
   const productButtons = calcSection.querySelectorAll(".calc-product");
   const qtySlider = calcSection.querySelector("#calc-qty");
   const qtyValueEl = calcSection.querySelector("#calc-qty-value");
@@ -354,6 +356,11 @@ if (calcSection) {
   const ctaBtn = calcSection.querySelector("#calc-cta");
 
   const rub = new Intl.NumberFormat("ru-RU");
+
+  const MODE_HINTS = {
+    single: "Пошив от 1 шт — подходит для себя или на подарок.",
+    wholesale: "Мелкосерийное производство — минимальный тираж 20 шт.",
+  };
 
   const getSelectedProduct = () => {
     const active = calcSection.querySelector('.calc-product[aria-pressed="true"]');
@@ -397,6 +404,24 @@ if (calcSection) {
     btn.addEventListener("click", () => {
       productButtons.forEach((otherBtn) => otherBtn.setAttribute("aria-pressed", "false"));
       btn.setAttribute("aria-pressed", "true");
+      calculate();
+    });
+  });
+
+  // Формат заказа переключает минимум тиража: штучно — от 1 шт,
+  // оптовая партия — от 20 шт (правило из блока «Услуги»). Скидки от 101/500 шт не меняются.
+  modeButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      modeButtons.forEach((otherBtn) => otherBtn.setAttribute("aria-selected", "false"));
+      btn.setAttribute("aria-selected", "true");
+
+      const minQty = Number(btn.dataset.minQty);
+      qtySlider.min = minQty;
+      if (Number(qtySlider.value) < minQty) {
+        qtySlider.value = minQty;
+      }
+
+      modeHintEl.textContent = MODE_HINTS[btn.dataset.mode] || "";
       calculate();
     });
   });

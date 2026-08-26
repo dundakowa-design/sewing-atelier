@@ -153,6 +153,15 @@
         <div class="calc">
           <div class="calc-panel">
             <div class="calc-field">
+              <span class="calc-label">Формат заказа</span>
+              <div class="service-tabs calc-mode" role="radiogroup" aria-label="Формат заказа">
+                <button type="button" class="service-tab" id="calc-mode-single" data-mode="single" data-min-qty="1" aria-selected="true">Штучно</button>
+                <button type="button" class="service-tab" id="calc-mode-wholesale" data-mode="wholesale" data-min-qty="20" aria-selected="false">Оптовая партия</button>
+              </div>
+              <p class="calc-mode-hint" id="calc-mode-hint">Пошив от 1 шт — подходит для себя или на подарок.</p>
+            </div>
+
+            <div class="calc-field">
               <span class="calc-label">Тип изделия</span>
               <div class="calc-products" role="radiogroup" aria-label="Тип изделия">
                 <button type="button" class="calc-product" data-price="300" data-name="Футболка / Топ" aria-pressed="true">

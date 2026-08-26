@@ -549,6 +549,15 @@ h1, h2, h3 {
   font-weight: 700;
 }
 
+.calc-mode {
+  margin-bottom: 0;
+}
+
+.calc-mode-hint {
+  font-size: var(--fs-small);
+  color: var(--color-ink-soft);
+}
+
 .calc-option {
   display: flex;
   align-items: center;
