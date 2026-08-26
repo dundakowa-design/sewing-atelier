@@ -1,3 +1,28 @@
+/* === Форма контактов в две колонки на ПК/планшете: ≥ 769px === */
+@media (min-width: 769px) {
+  .contact-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  .contact-form .field {
+    margin-bottom: 0;
+  }
+
+  .contact-form > *:not(.field) {
+    grid-column: 1 / -1;
+  }
+
+  .calc-summary-note {
+    margin-top: var(--space-1);
+  }
+
+  .btn-block {
+    margin-top: var(--space-1);
+  }
+}
+
 /* === Планшет: ≤ 1024px === */
 @media (max-width: 1024px) {
   .gallery-grid {
@@ -39,6 +64,10 @@
 
   .contact-info-col {
     padding-top: 0;
+  }
+
+  .contact-map {
+    height: 300px;
   }
 }
 
