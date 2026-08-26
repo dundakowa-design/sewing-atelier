@@ -10,12 +10,20 @@
     {
       "src": "api/submit.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/bot.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/submit",
       "dest": "api/submit.js"
+    },
+    {
+      "src": "/api/bot",
+      "dest": "api/bot.js"
     },
     {
       "src": "/(.*)",
