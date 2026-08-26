@@ -27,8 +27,18 @@
     margin-inline: auto;
   }
 
-  .contact-inner {
-    grid-template-columns: 1fr;
+  .contact-heading,
+  .contact-form-col,
+  .contact-info-col {
+    padding: var(--space-4);
+  }
+
+  .contact-heading {
+    padding-bottom: var(--space-2);
+  }
+
+  .contact-info-col {
+    padding-top: 0;
   }
 }
 
@@ -254,8 +264,10 @@
 
 /* === Малые экраны: ≤ 420px === */
 @media (max-width: 420px) {
-  .contact-form {
-    padding: var(--space-3);
+  .contact-heading,
+  .contact-form-col,
+  .contact-info-col {
+    padding-inline: var(--space-2);
   }
 }
 
@@ -322,5 +334,41 @@
     justify-self: center;
     padding: 0.75em 1.6em;
     border-radius: 999px;
+  }
+
+  /* === Карточка контактов: одна колонка, форма — сразу после заголовка === */
+  .contact {
+    padding-block: var(--space-5);
+  }
+
+  .contact-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "heading"
+      "form"
+      "info";
+  }
+
+  .contact-heading,
+  .contact-form-col,
+  .contact-info-col {
+    padding: var(--space-3);
+  }
+
+  .contact-heading {
+    padding-bottom: var(--space-1);
+  }
+
+  .contact-form-col {
+    padding-top: var(--space-1);
+    padding-bottom: var(--space-1);
+  }
+
+  .contact-info-col {
+    padding-top: var(--space-2);
+  }
+
+  .contact-map {
+    height: 220px;
   }
 }

@@ -349,59 +349,65 @@
 
     <!-- КОНТАКТЫ / ФОРМА -->
     <section class="contact" id="contact">
-      <div class="container contact-inner">
-        <div class="contact-text">
-          <span class="eyebrow">Связаться с нами</span>
-          <h2 class="contact-title">Оставьте заявку</h2>
-          <p class="contact-lead">Расскажите, что нужно сшить или починить — перезвоним и обсудим детали, сроки и стоимость.</p>
+      <div class="container">
+        <div class="contact-card">
+          <div class="contact-heading">
+            <span class="eyebrow">Связаться с нами</span>
+            <h2 class="contact-title">Оставьте заявку</h2>
+            <p class="contact-lead">Расскажите, что нужно сшить или починить — перезвоним и обсудим детали, сроки и стоимость.</p>
+          </div>
 
-          <dl class="contact-details">
-            <div>
-              <dt>Телефон</dt>
-              <dd><a href="tel:+79015462094" class="contact-link">+7 (901) 546-20-94</a></dd>
-            </div>
-            <div>
-              <dt>Email</dt>
-              <dd><a href="mailto:info@stezhok.ru" class="contact-link">info@stezhok.ru</a></dd>
-            </div>
-            <div>
-              <dt>Адрес цеха</dt>
-              <dd>г. Москва, ул. Текстильная, 12</dd>
-            </div>
-            <div>
-              <dt>Режим работы</dt>
-              <dd>Пн–Сб, 9:00–19:00</dd>
-            </div>
-          </dl>
+          <div class="contact-form-col">
+            <form class="contact-form" id="order-form" action="/order" method="post">
+              <div class="field">
+                <label for="name">Имя</label>
+                <input type="text" id="name" name="name" placeholder="Как к вам обращаться" autocapitalize="words" required>
+              </div>
 
-          <div class="contact-map">
-            <iframe src="https://yandex.ru/map-widget/v1/?ll=37.617600%2C55.755800&z=16&l=map&pt=37.617600,55.755800,pm2rdm" title="Карта проезда до цеха «Стежок»" loading="lazy"></iframe>
+              <div class="field">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+              </div>
+
+              <p class="calc-summary-note" id="calc-summary-display" hidden></p>
+              <input type="hidden" name="calc_summary" id="calc-field-summary">
+              <input type="hidden" name="calc_product" id="calc-field-product">
+              <input type="hidden" name="calc_qty" id="calc-field-qty">
+              <input type="hidden" name="calc_total" id="calc-field-total">
+
+              <div style="display:none;"><input type="text" name="confirm_email_check" autocomplete="off" tabindex="-1"></div>
+
+              <button type="submit" class="btn btn-primary btn-block">Отправить заявку</button>
+              <p class="field-note">Нажимая «Отправить», вы соглашаетесь на обработку данных для обратной связи.</p>
+              <p class="form-status" id="form-status" role="status"></p>
+            </form>
+          </div>
+
+          <div class="contact-info-col">
+            <dl class="contact-details">
+              <div>
+                <dt>Телефон</dt>
+                <dd><a href="tel:+79015462094" class="contact-link">+7 (901) 546-20-94</a></dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd><a href="mailto:info@stezhok.ru" class="contact-link">info@stezhok.ru</a></dd>
+              </div>
+              <div>
+                <dt>Адрес цеха</dt>
+                <dd>г. Москва, ул. Текстильная, 12</dd>
+              </div>
+              <div>
+                <dt>Режим работы</dt>
+                <dd>Пн–Сб, 9:00–19:00</dd>
+              </div>
+            </dl>
+
+            <div class="contact-map">
+              <iframe src="https://yandex.ru/map-widget/v1/?ll=37.617600%2C55.755800&z=16&l=map&pt=37.617600,55.755800,pm2rdm" title="Карта проезда до цеха «Стежок»" loading="lazy"></iframe>
+            </div>
           </div>
         </div>
-
-        <form class="contact-form" id="order-form" action="/order" method="post">
-          <div class="field">
-            <label for="name">Имя</label>
-            <input type="text" id="name" name="name" placeholder="Как к вам обращаться" autocapitalize="words" required>
-          </div>
-
-          <div class="field">
-            <label for="phone">Телефон</label>
-            <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
-          </div>
-
-          <p class="calc-summary-note" id="calc-summary-display" hidden></p>
-          <input type="hidden" name="calc_summary" id="calc-field-summary">
-          <input type="hidden" name="calc_product" id="calc-field-product">
-          <input type="hidden" name="calc_qty" id="calc-field-qty">
-          <input type="hidden" name="calc_total" id="calc-field-total">
-
-          <div style="display:none;"><input type="text" name="confirm_email_check" autocomplete="off" tabindex="-1"></div>
-
-          <button type="submit" class="btn btn-primary btn-block">Отправить заявку</button>
-          <p class="field-note">Нажимая «Отправить», вы соглашаетесь на обработку данных для обратной связи.</p>
-          <p class="form-status" id="form-status" role="status"></p>
-        </form>
       </div>
     </section>
   </main>
