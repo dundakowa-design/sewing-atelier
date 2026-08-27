@@ -12,6 +12,8 @@
 // итоговой заявки (в том числе если второй ответ не прошёл валидацию и вопрос
 // задаётся повторно).
 
+const { sendToSheetsWebhook } = require("./_lib/sheetsWebhook");
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -221,6 +223,7 @@ module.exports = async function handler(req, res) {
 
       const from = message.from || {};
       const author = from.username ? `@${from.username}` : `id ${from.id ?? "—"}`;
+      const name = from.first_name || "(не указано)";
 
       const summaryText = [
         "🧵 <b>Новая заявка из Telegram-бота</b>",
@@ -230,7 +233,26 @@ module.exports = async function handler(req, res) {
         `💬 <b>От:</b> ${escapeHtml(author)}`,
       ].join("\n");
 
-      await sendMessage(token, groupChatId, summaryText, { parse_mode: "HTML" });
+      // Группа — основной канал, и её сбой здесь не проверяем отдельно (как и
+      // раньше). Таблица — вспомогательный канал: шлём её параллельно, и её
+      // сбой не должен ни блокировать, ни ломать ни группу, ни ответ клиенту.
+      const [, sheetResult] = await Promise.allSettled([
+        sendMessage(token, groupChatId, summaryText, { parse_mode: "HTML" }),
+        sendToSheetsWebhook({
+          Дата: new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" }),
+          Имя: name,
+          Телефон: text,
+          Изделие: product,
+          Тираж: "",
+          Сумма: "",
+          Источник: "Telegram-бот",
+        }),
+      ]);
+
+      if (sheetResult.status === "rejected") {
+        console.error(sheetResult.reason?.message || sheetResult.reason);
+      }
+
       await sendMessage(token, chatId, "Спасибо! Ваша заявка принята, мастер свяжется с вами в ближайшее время.");
 
       return res.status(200).json({ ok: true });

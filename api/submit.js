@@ -1,6 +1,8 @@
 // Vercel Serverless Function (Node.js): принимает заявку с сайта и параллельно
 // 1) отправляет её в Telegram-чат, 2) дублирует данные на вебхук (например, в таблицу).
 
+const { sendToSheetsWebhook } = require("./_lib/sheetsWebhook");
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -24,35 +26,6 @@ async function sendToTelegram({ token, chatId, text }) {
   if (!response.ok) {
     const details = await response.text();
     throw new Error(`Telegram API вернул ошибку: ${details}`);
-  }
-}
-
-// Отправка данных заявки на внешний вебхук (Zapier / Make / Google Apps Script Web App и т.п.).
-// Тоже бросает исключение при неудаче, но в handler эта ошибка не приводит
-// к ответу с ошибкой клиенту — вебхук вспомогательный, а не критичный канал.
-async function sendToWebhook({ date, name, phone, product, qty, total }) {
-  const webhookUrl = process.env.SHEETS_WEBHOOK_URL;
-
-  if (!webhookUrl) {
-    throw new Error("Не задана переменная окружения SHEETS_WEBHOOK_URL — вебхук пропущен");
-  }
-
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      Дата: date,
-      Имя: name,
-      Телефон: phone,
-      Изделие: product,
-      Тираж: qty,
-      Сумма: total,
-    }),
-  });
-
-  if (!response.ok) {
-    const details = await response.text();
-    throw new Error(`Вебхук вернул ошибку ${response.status}: ${details}`);
   }
 }
 
@@ -107,13 +80,14 @@ module.exports = async function handler(req, res) {
   // Оба запроса стартуют одновременно и независимо друг от друга.
   const [telegramResult, webhookResult] = await Promise.allSettled([
     sendToTelegram({ token, chatId, text }),
-    sendToWebhook({
-      date,
-      name,
-      phone,
-      product: calcProduct,
-      qty: calcQty,
-      total: calcTotal,
+    sendToSheetsWebhook({
+      Дата: date,
+      Имя: name,
+      Телефон: phone,
+      Изделие: calcProduct,
+      Тираж: calcQty,
+      Сумма: calcTotal,
+      Источник: "Сайт",
     }),
   ]);
 
