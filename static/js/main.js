@@ -466,3 +466,30 @@ if (calcSection) {
 
   calculate();
 }
+
+// Кнопка "Оформить в Telegram": сперва пробуем deep-link tg://, который сразу
+// открывает приложение. Если за 1.5с страница не потеряла фокус (значит,
+// приложение не установлено и переход не сработал) — уходим на веб-ссылку.
+const telegramCta = document.querySelector("#telegram-cta");
+
+if (telegramCta) {
+  telegramCta.addEventListener("click", (event) => {
+    const deepLink = telegramCta.getAttribute("href");
+    const fallbackUrl = telegramCta.dataset.telegramFallback;
+    if (!fallbackUrl) return;
+
+    event.preventDefault();
+
+    const fallbackTimer = window.setTimeout(() => {
+      window.location.href = fallbackUrl;
+    }, 1500);
+
+    const cancelFallback = () => window.clearTimeout(fallbackTimer);
+    window.addEventListener("blur", cancelFallback, { once: true });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) cancelFallback();
+    }, { once: true });
+
+    window.location.href = deepLink;
+  });
+}
