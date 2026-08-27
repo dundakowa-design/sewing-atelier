@@ -19,6 +19,50 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
+const CONTACTS_REPLY = [
+  "📍 Наш адрес: г. Москва, ул. Текстильная, 12",
+  "⏰ Режим работы: Пн-Пт с 09:00 до 18:00",
+  "📞 Телефон: +7 (901) 546-20-94",
+  "✉️ Email: info@atelier-stezhok.ru",
+  "",
+  "Ждем вас в гости! Вы также можете построить маршрут на карте прямо на нашем сайте.",
+].join("\n");
+
+const PRICING_REPLY = [
+  "⏳ Базовые сроки производства:",
+  "• Мелкие партии (от 20 шт.) — от 5 до 7 рабочих дней.",
+  "• Крупные тиражи — индивидуально, в зависимости от сложности.",
+  "• Разработка лекал — от 2 до 4 дней.",
+  "",
+  "💰 Точную стоимость пошива вашей партии с учетом скидок от объема вы можете рассчитать прямо сейчас в калькуляторе на нашем сайте! Просто нажмите кнопку 'Перейти на сайт' в главном меню.",
+].join("\n");
+
+const BOT_COMMANDS = [
+  { command: "start", description: "Запустить бота и оформить заказ" },
+  { command: "contacts", description: "Адрес и контакты ателье" },
+  { command: "pricing", description: "Сроки и базовые цены" },
+];
+
+// Синее меню команд Telegram регистрируется отдельным вызовом API, никак не
+// связанным с обработкой конкретного апдейта. У серверлесс-функции нет
+// традиционного "старта процесса" — ближайший аналог здесь это холодный
+// старт контейнера Vercel, поэтому регистрируем меню один раз при загрузке
+// модуля (а не на каждый вебхук: пока контейнер "тёплый", require() второй
+// раз не выполнится).
+if (process.env.TELEGRAM_BOT_TOKEN) {
+  fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setMyCommands`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ commands: BOT_COMMANDS }),
+  }).catch((error) => console.error("Не удалось зарегистрировать меню команд бота:", error));
+}
+
+// В группах Telegram дописывает к команде юзернейм бота (/contacts@stezhok_atelier_bot),
+// а иногда после команды идёт аргумент через пробел — учитываем оба варианта.
+function isCommand(value, command) {
+  return value === command || value.startsWith(`${command}@`) || value.startsWith(`${command} `);
+}
+
 const QUESTION_PRODUCT = "Что именно вы хотите сшить или отремонтировать? (Например: 50 худи, ремонт куртки)";
 const QUESTION_CONTACTS = "Напишите, пожалуйста, ваше имя и номер телефона для связи 📞";
 const INVALID_CONTACTS_MESSAGE = "Ой, кажется, вы забыли указать номер телефона. Пожалуйста, напишите ваше имя и корректный номер, чтобы наш мастер смог с вами связаться ☺️";
@@ -141,6 +185,18 @@ module.exports = async function handler(req, res) {
       },
     });
 
+    return res.status(200).json({ ok: true });
+  }
+
+  // --- Команда /contacts ---
+  if (isCommand(text, "/contacts") || text === "Контакты") {
+    await sendMessage(token, chatId, CONTACTS_REPLY);
+    return res.status(200).json({ ok: true });
+  }
+
+  // --- Команда /pricing ---
+  if (isCommand(text, "/pricing") || text === "Цены и сроки") {
+    await sendMessage(token, chatId, PRICING_REPLY);
     return res.status(200).json({ ok: true });
   }
 
