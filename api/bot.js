@@ -1,20 +1,16 @@
 // Vercel Serverless Function (Node.js): вебхук Telegram-бота.
-// Telegram шлёт сюда POST-запрос при каждом сообщении, нажатии кнопки
+// Telegram шлёт сюда POST-запрос при каждом сообщении, нажатии inline-кнопки
 // или команде пользователя.
 //
 // Опрос "оформить заказ прямо в чате" сделан БЕЗ базы данных и без памяти
 // между вызовами (функция серверлесс, состояние между запросами не хранится).
-// Поэтому порядок шагов такой: СНАЧАЛА бот запрашивает телефон через кнопку
-// "Отправить номер телефона" (request_contact) — это самостоятельный первый
-// шаг, ему не нужен контекст предыдущих сообщений. У сообщения с контактом
-// НЕТ reply_to_message (это особенность обычной ReplyKeyboardMarkup, в
-// отличие от force_reply), поэтому связать его с каким-то предыдущим текстом
-// невозможно в принципе — а вот запросить контакт "с нуля" можно всегда.
-// Вопрос "что шить" задаём ВТОРЫМ, через force_reply, — и полученный телефон
-// "провозим" короткой цитатой внутри текста этого вопроса, чтобы не потерять
-// его к моменту сборки итоговой заявки. Имя берём из профиля Telegram
-// (message.from.first_name) прямо в момент финального ответа — его вообще
-// не нужно никуда провозить, оно есть в любом сообщении пользователя.
+// Вместо этого каждый вопрос бота отправляется с reply_markup.force_reply —
+// тогда ответ пользователя приходит с заполненным message.reply_to_message,
+// и по тексту этого поля мы понимаем, на какой вопрос отвечают. Текст первого
+// ответа (что шить) "провозится" внутри второго вопроса короткой цитатой —
+// это единственное место, куда его можно положить, чтобы не терять при сборке
+// итоговой заявки (в том числе если второй ответ не прошёл валидацию и вопрос
+// задаётся повторно).
 
 function escapeHtml(value) {
   return String(value)
@@ -23,27 +19,33 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
-const CONTACT_BUTTON_TEXT = "📱 Отправить номер телефона";
-const CONTACT_PROMPT = "Чтобы мастер мог с вами связаться, поделитесь, пожалуйста, номером телефона — нажмите кнопку ниже 👇";
-const CONTACT_WRONG_PERSON_WARNING = "Похоже, это чужой контакт. Нажмите кнопку «📱 Отправить номер телефона» — она отправит именно ваш номер.";
 const QUESTION_PRODUCT = "Что именно вы хотите сшить или отремонтировать? (Например: 50 худи, ремонт куртки)";
+const QUESTION_CONTACTS = "Напишите, пожалуйста, ваше имя и номер телефона для связи 📞";
+const INVALID_CONTACTS_MESSAGE = "Ой, кажется, вы забыли указать номер телефона. Пожалуйста, напишите ваше имя и корректный номер, чтобы наш мастер смог с вами связаться ☺️";
 
-// Телефон, полученный через кнопку, "провозим" в тексте вопроса о заказе —
-// см. buildProductQuestion() / extractPhoneFromRepliedQuestion() ниже.
-const PHONE_RECAP_PREFIX = "Телефон записан: ";
+// Текст первого ответа "провозим" короткой цитатой внутри второго вопроса —
+// см. extractProductFromRepliedQuestion() ниже, где она достаётся обратно.
+const PRODUCT_RECAP_PREFIX = "Записал: «";
+const PRODUCT_RECAP_SUFFIX = `»\n\n${QUESTION_CONTACTS}`;
 
-function buildProductQuestion(phone) {
-  return `${PHONE_RECAP_PREFIX}${phone}\n\n${QUESTION_PRODUCT}`;
+function buildContactsQuestion(productAnswer) {
+  return `${PRODUCT_RECAP_PREFIX}${productAnswer}${PRODUCT_RECAP_SUFFIX}`;
 }
 
-// Возвращает телефон, если repliedToText — это именно наш вопрос о заказе
-// с "провезённым" в нём телефоном, иначе null.
-function extractPhoneFromRepliedQuestion(repliedToText) {
-  const suffix = `\n\n${QUESTION_PRODUCT}`;
-  if (!repliedToText.startsWith(PHONE_RECAP_PREFIX) || !repliedToText.endsWith(suffix)) {
+// Возвращает текст "что шить", если repliedToText — это наш вопрос про
+// контакты с "провезённым" в нём ответом на первый вопрос, иначе null.
+function extractProductFromRepliedQuestion(repliedToText) {
+  if (!repliedToText.startsWith(PRODUCT_RECAP_PREFIX) || !repliedToText.endsWith(PRODUCT_RECAP_SUFFIX)) {
     return null;
   }
-  return repliedToText.slice(PHONE_RECAP_PREFIX.length, -suffix.length).trim();
+  return repliedToText.slice(PRODUCT_RECAP_PREFIX.length, -PRODUCT_RECAP_SUFFIX.length);
+}
+
+// Мягкая проверка: в нормальном номере телефона минимум 10 цифр
+// (даже без учёта кода страны). Если цифр меньше — это явно не телефон.
+function looksLikePhone(value) {
+  const digitCount = (value.match(/\d/g) || []).length;
+  return digitCount >= 10;
 }
 
 async function callTelegramApi(token, method, payload) {
@@ -64,14 +66,9 @@ function sendMessage(token, chatId, text, extra = {}) {
   return callTelegramApi(token, "sendMessage", { chat_id: chatId, text, ...extra });
 }
 
-// Запрашивает телефон кнопкой request_contact — единственный способ получить
-// от Telegram проверенный номер, а не произвольный текст.
-function askForContact(token, chatId) {
-  return sendMessage(token, chatId, CONTACT_PROMPT, {
-    reply_markup: {
-      keyboard: [[{ text: CONTACT_BUTTON_TEXT, request_contact: true }]],
-      one_time_keyboard: true,
-    },
+function askForceReply(token, chatId, question, placeholder) {
+  return sendMessage(token, chatId, question, {
+    reply_markup: { force_reply: true, input_field_placeholder: placeholder },
   });
 }
 
@@ -104,7 +101,7 @@ module.exports = async function handler(req, res) {
     await callTelegramApi(token, "answerCallbackQuery", { callback_query_id: callback.id });
 
     if (callback.data === "start_order" && callback.message) {
-      await askForContact(token, callback.message.chat.id);
+      await askForceReply(token, callback.message.chat.id, QUESTION_PRODUCT, "Например: 50 худи");
     }
 
     return res.status(200).json({ ok: true });
@@ -112,32 +109,8 @@ module.exports = async function handler(req, res) {
 
   const message = update.message;
 
-  if (!message) {
-    return res.status(200).json({ ok: true });
-  }
-
-  // --- Пользователь поделился контактом (кнопка "Отправить номер телефона") ---
-  if (message.contact && typeof message.contact.phone_number === "string") {
-    const chatId = message.chat.id;
-    const from = message.from || {};
-
-    // request_contact сам по себе даёт только кнопку "поделиться СВОИМ номером",
-    // но пользователь технически может вручную прикрепить чужую визитку поверх
-    // той же клавиатуры — на всякий случай сверяем владельца контакта с автором.
-    if (message.contact.user_id && from.id && message.contact.user_id !== from.id) {
-      await sendMessage(token, chatId, CONTACT_WRONG_PERSON_WARNING);
-      return res.status(200).json({ ok: true });
-    }
-
-    await sendMessage(token, chatId, buildProductQuestion(message.contact.phone_number), {
-      reply_markup: { force_reply: true, input_field_placeholder: "Например: 50 худи" },
-    });
-
-    return res.status(200).json({ ok: true });
-  }
-
   // Не текстовое сообщение (стикер, фото и т.п.) — просто подтверждаем приём.
-  if (typeof message.text !== "string") {
+  if (!message || typeof message.text !== "string") {
     return res.status(200).json({ ok: true });
   }
 
@@ -171,22 +144,33 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ ok: true });
   }
 
-  // --- Финальный шаг опроса: пользователь ответил, что хочет сшить/отремонтировать —
-  // телефон уже проверенный (из message.contact), достаём его из "провезённой" цитаты ---
-  if (repliedTo) {
-    const phone = extractPhoneFromRepliedQuestion(repliedTo);
+  // --- Вопрос 1: пользователь ответил, что хочет сшить/отремонтировать ---
+  if (repliedTo === QUESTION_PRODUCT) {
+    await askForceReply(token, chatId, buildContactsQuestion(text), "Имя, телефон");
+    return res.status(200).json({ ok: true });
+  }
 
-    if (phone) {
+  // --- Вопрос 2: пользователь прислал имя и телефон ---
+  if (repliedTo) {
+    const product = extractProductFromRepliedQuestion(repliedTo);
+
+    if (product !== null) {
+      // Мягкая валидация: явный бред без номера телефона переспрашиваем,
+      // не потеряв при этом ответ на первый вопрос.
+      if (!looksLikePhone(text)) {
+        await sendMessage(token, chatId, INVALID_CONTACTS_MESSAGE);
+        await askForceReply(token, chatId, buildContactsQuestion(product), "Имя, телефон");
+        return res.status(200).json({ ok: true });
+      }
+
       const from = message.from || {};
-      const name = from.first_name || "(не указано)";
       const author = from.username ? `@${from.username}` : `id ${from.id ?? "—"}`;
 
       const summaryText = [
         "🧵 <b>Новая заявка из Telegram-бота</b>",
         "",
-        `✂️ <b>Что нужно:</b> ${escapeHtml(text)}`,
-        `👤 <b>Имя:</b> ${escapeHtml(name)}`,
-        `📞 <b>Телефон:</b> ${escapeHtml(phone)}`,
+        `✂️ <b>Что нужно:</b> ${escapeHtml(product)}`,
+        `👤 <b>Контакты:</b> ${escapeHtml(text)}`,
         `💬 <b>От:</b> ${escapeHtml(author)}`,
       ].join("\n");
 
