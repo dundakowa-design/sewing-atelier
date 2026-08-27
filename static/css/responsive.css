@@ -50,6 +50,11 @@
     grid-column: 1 / -1;
   }
 
+  .form-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
   .calc-summary-note {
     margin-top: var(--space-1);
   }

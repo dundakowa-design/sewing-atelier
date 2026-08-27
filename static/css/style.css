@@ -86,6 +86,23 @@ h1, h2, h3 {
   width: 100%;
 }
 
+.btn-telegram {
+  background: #24a1de;
+  color: #fff;
+  padding-inline: 1.1em;
+}
+
+.btn-telegram:hover {
+  background: #1b8bc4;
+  transform: translateY(-1px);
+}
+
+.btn-telegram-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 /* === Стежок-разделитель (фирменный элемент) === */
 .stitch-divider {
   width: 100%;
@@ -928,6 +945,12 @@ h1, h2, h3 {
 
 .field input.field-invalid:focus-visible {
   border-color: #e5484d;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .field-note {
