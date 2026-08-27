@@ -3,7 +3,7 @@
    карточка формы со своим заголовком. Мобильную раскладку (≤768px,
    ниже по файлу) этот блок не затрагивает. */
 @media (min-width: 769px) {
-  .contact-heading {
+  .contact-form-eyebrow {
     display: none;
   }
 
@@ -33,7 +33,6 @@
   }
 
   .contact-form-head {
-    display: block;
     margin-bottom: var(--space-3);
   }
 
@@ -312,7 +311,6 @@
 
 /* === Малые экраны: ≤ 420px === */
 @media (max-width: 420px) {
-  .contact-heading,
   .contact-form-col,
   .contact-info-col {
     padding-inline: var(--space-2);
@@ -392,24 +390,23 @@
   .contact-card {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "heading"
       "form"
       "info";
   }
 
-  .contact-heading,
   .contact-form-col,
   .contact-info-col {
     padding: var(--space-3);
   }
 
-  .contact-heading {
-    padding-bottom: var(--space-1);
-  }
-
   .contact-form-col {
     padding-top: var(--space-1);
     padding-bottom: var(--space-1);
+  }
+
+  .contact-form-head {
+    padding-top: var(--space-2);
+    margin-bottom: var(--space-2);
   }
 
   .contact-info-col {
