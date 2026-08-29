@@ -245,7 +245,7 @@ module.exports = async function handler(req, res) {
           Изделие: product,
           Тираж: "",
           Сумма: "",
-          Источник: "Telegram-бот",
+          source: "Telegram-бот",
         }),
       ]);
 

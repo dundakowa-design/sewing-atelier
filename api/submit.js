@@ -87,7 +87,7 @@ module.exports = async function handler(req, res) {
       Изделие: calcProduct,
       Тираж: calcQty,
       Сумма: calcTotal,
-      Источник: "Сайт",
+      source: "Сайт",
     }),
   ]);
 
