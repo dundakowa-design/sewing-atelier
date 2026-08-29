@@ -12,3 +12,7 @@ __pycache__/
 
 # Vercel
 .vercel/
+
+# Локальные агентские инструменты (Claude Code, установленные Agent Skills)
+.agents/
+.claude/
