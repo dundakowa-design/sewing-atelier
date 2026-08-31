@@ -133,8 +133,8 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ ok: true });
   }
 
-  // Переменная окружения SITE_URL в Vercel переопределит этот адрес (например, при подключении своего домена).
-  const siteUrl = process.env.SITE_URL || "https://atelier-stezhok.vercel.app";
+  // Переменная окружения SITE_URL в Vercel переопределит этот адрес, если понадобится.
+  const siteUrl = process.env.SITE_URL || "https://stezhok-za-stezhkom.ru";
   // Рабочая группа "Стежок Ателье" — куда падают заявки, оформленные прямо в чате бота.
   // Та же переменная, что уже используется для заявок с сайта (api/submit.js).
   const groupChatId = process.env.TELEGRAM_CHAT_ID || "-1003512421303";
