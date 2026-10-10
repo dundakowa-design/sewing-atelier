@@ -13,6 +13,7 @@
 // задаётся повторно).
 
 const { sendToSheetsWebhook } = require("./_lib/sheetsWebhook");
+const { telegramApiUrl } = require("./_lib/telegramApi");
 
 function escapeHtml(value) {
   return String(value)
@@ -52,7 +53,7 @@ const BOT_COMMANDS = [
 // модуля (а не на каждый вебхук: пока контейнер "тёплый", require() второй
 // раз не выполнится).
 if (process.env.TELEGRAM_BOT_TOKEN) {
-  fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setMyCommands`, {
+  fetch(telegramApiUrl(process.env.TELEGRAM_BOT_TOKEN, "setMyCommands"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ commands: BOT_COMMANDS }),
@@ -95,7 +96,7 @@ function looksLikePhone(value) {
 }
 
 async function callTelegramApi(token, method, payload) {
-  const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
+  const response = await fetch(telegramApiUrl(token, method), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),

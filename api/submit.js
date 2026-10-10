@@ -2,6 +2,7 @@
 // 1) отправляет её в Telegram-чат, 2) дублирует данные на вебхук (например, в таблицу).
 
 const { sendToSheetsWebhook } = require("./_lib/sheetsWebhook");
+const { telegramApiUrl } = require("./_lib/telegramApi");
 
 function escapeHtml(value) {
   return String(value)
@@ -13,7 +14,7 @@ function escapeHtml(value) {
 // Отправка уведомления в Telegram. Бросает исключение при неудаче —
 // это основной (критичный) канал, его сбой должен вернуть ошибку клиенту.
 async function sendToTelegram({ token, chatId, text }) {
-  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+  const response = await fetch(telegramApiUrl(token, "sendMessage"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
