@@ -241,7 +241,8 @@ module.exports = async function handler(req, res) {
         sendMessage(token, groupChatId, summaryText, { parse_mode: "HTML" }),
         sendToSheetsWebhook({
           Дата: new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" }),
-          Имя: name,
+          // Юзернейм рядом с именем — чтобы менеджер мог найти клиента в Telegram.
+          Имя: from.username ? `${name} (@${from.username})` : name,
           Телефон: text,
           Изделие: product,
           Тираж: "",
